@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 484ac7ae619563448a38778b151a0735, type: 3}
+  m_Name: TestSkill
+  m_EditorClassIdentifier: 
+  id: 1
+  anticipationTime: 0.15
+  recoveryTime: 0.3
+  cooldownTime: 2
+  damage: 10
+  projectilePrefab: {fileID: 584207449403360073, guid: b1ae5055f08b8284d9e996465d1d37e3, type: 3}
+  icon: {fileID: -292873078, guid: 96c81ca06bf9e7f42b0b0a9e62d492c5, type: 3}
