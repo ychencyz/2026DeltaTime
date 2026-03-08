@@ -97,3 +97,17 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+._.DS_Store
+._.vscode
+._Temp
+.DS_Store
+.vsconfig
+.vscode/._extensions.json
+.vscode/
+
+#ignore download assets
+Assets/QuangPhan
+Assets/LeartesStudios
+Assets/TutorialInfo
+BuildTest
+BuildTestWins
