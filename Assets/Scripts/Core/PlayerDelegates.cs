@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 public class PlayerDelegates : MonoBehaviour
 {
     public static PlayerDelegates Instance { get; private set; }
+    public Action OnSkillChange;
+
     public Action OnAttackStart;
     public Action OnAttackCancel;
     public Action OnLightAttack;
@@ -15,8 +17,10 @@ public class PlayerDelegates : MonoBehaviour
     public Action OnSkillCancel;
     public Action OnBreakFree;
 
-    public Action<SkillData> OnSkillCooldownStarted;
-    public Action<SkillData> OnSkillInterrupted;
+    public Action<SkillSet> OnPlayerSkillsLoaded;
+    public Action<SkillSet, int> OnPlayerSkillChange;
+    public Action<SkillSet, SkillData> OnSkillCooldownStarted;
+    public Action<SkillSet, SkillData> OnSkillInterrupted;
     private void Awake()
     {
         if (Instance != null && Instance != this)

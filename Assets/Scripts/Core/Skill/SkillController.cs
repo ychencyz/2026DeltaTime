@@ -3,67 +3,79 @@
 using UnityEngine;
 using System.Collections;
 
-
-
-// 2. 生命週期枚舉
 public enum SkillState { Idle, Anticipation, Execution, Recovery, Cooldown }
 
-// 3. 核心控制器
 public class SkillController : MonoBehaviour
 {
-    public SkillData data;
-    private SkillState currentState = SkillState.Idle;
-    private Coroutine skillRoutine;
-    // 外部進入點
-    public void TryCast()
-    {
-        // 狀態裁判 Gate: 檢查是否能施法
-        if (currentState != SkillState.Idle) return;
-        if (GetComponent<StatusSystem>().isStunned) return;
+    private SkillSet skillSet;
+    private SkillData data;
 
-        skillRoutine = StartCoroutine(SkillLifecycle());
+    private void Start()
+    {
+        skillSet = GetComponent<SkillSet>();
     }
-    private IEnumerator SkillLifecycle()
+    // 外部進入點
+    public void TryCast(SkillData _data, Vector3 position)
+    {
+        // 狀態裁判 Gate: 檢查角色Status
+        if (GetComponent<StatusSystem>().isStunned) return;
+        // 狀態裁判 Gate: 檢查前一個skill是否能施法
+        if (data != null)
+        {
+            bool prevSkillOk = (data.state == SkillState.Idle || data.state == SkillState.Cooldown);
+            Debug.Log("data.state:" + data.state);
+            Debug.Log("prevSkillOk:" + prevSkillOk);
+            if (!prevSkillOk) return;
+        }
+        // 狀態裁判 Gate: 檢查按下的skill是否能施法
+        Debug.Log("new _data.state:" + _data.state);
+        if (_data.state != SkillState.Idle) return;
+        data = _data;
+        data.position = position;
+        data.skillRoutine = StartCoroutine(SkillLifecycle(data));
+    }
+    private IEnumerator SkillLifecycle(SkillData data)
     {
         // [Anticipation] 前搖
-        currentState = SkillState.Anticipation;
+        data.state = SkillState.Anticipation;
         yield return new WaitForSeconds(data.anticipationTime);
 
         // [Execution] 執行核心邏輯
-        currentState = SkillState.Execution;
-        ExecuteProjectile();
+        data.state = SkillState.Execution;
+        ExecuteSkill();
 
         // [Recovery] 後搖
-        PlayerDelegates.Instance.OnSkillCooldownStarted?.Invoke(data);
-        currentState = SkillState.Recovery;
+        PlayerDelegates.Instance.OnSkillCooldownStarted?.Invoke(skillSet, data);
+        data.state = SkillState.Recovery;
         yield return new WaitForSeconds(data.recoveryTime);
 
         // [Cooldown] 冷卻啟動
-        StartCoroutine(CooldownRoutine());
+        data.state = SkillState.Cooldown;
+        StartCoroutine(CooldownRoutine(data));
     }
-    private IEnumerator CooldownRoutine()
+    private IEnumerator CooldownRoutine(SkillData data)
     {
         yield return new WaitForSeconds(data.cooldownTime);
-        currentState = SkillState.Idle;
+        data.state = SkillState.Idle;
     }
     public void Interrupt()
     {
-        if (currentState == SkillState.Anticipation)
+        if (data.state == SkillState.Anticipation)
         {
-            PlayerDelegates.Instance.OnSkillInterrupted?.Invoke(data);
-            StopCoroutine(skillRoutine);
-            currentState = SkillState.Idle;
+            PlayerDelegates.Instance.OnSkillInterrupted?.Invoke(skillSet, data);
+            StopCoroutine(data.skillRoutine);
+            data.state = SkillState.Idle;
             // 清理已生成的特效...
         }
     }
-    private void ExecuteProjectile()
+    private void ExecuteSkill()
     {
         // 實作投射物生成，注意處理 NullReferenceException
         GameObject reference = data.projectilePrefab;
-        GameObject obj = Instantiate(reference, Vector3.zero, Quaternion.identity);
+        GameObject obj = Instantiate(reference, data.position, Quaternion.identity);
         float animationDuration = obj.GetComponent<ParticleSystem>().main.duration;
         Destroy(obj, animationDuration);
-        
+
         Debug.Log("Fire!");
     }
 }

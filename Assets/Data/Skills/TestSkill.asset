@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: TestSkill
   m_EditorClassIdentifier: 
   id: 1
+  state: 0
+  position: {x: 0, y: 0, z: 0}
+  displayName: Crystal
   anticipationTime: 0.15
-  recoveryTime: 0.3
+  recoveryTime: 0
   cooldownTime: 2
   damage: 10
   projectilePrefab: {fileID: 584207449403360073, guid: b1ae5055f08b8284d9e996465d1d37e3, type: 3}

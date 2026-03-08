@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: TestSkill2
   m_EditorClassIdentifier: 
   id: 3
+  state: 0
+  position: {x: 0, y: 0, z: 0}
+  displayName: Meteor
   anticipationTime: 0.15
-  recoveryTime: 0.3
+  recoveryTime: 0
   cooldownTime: 5
   damage: 10
   projectilePrefab: {fileID: 7957833072274404953, guid: 3355f6bfa6db8b24281b827de929694c, type: 3}

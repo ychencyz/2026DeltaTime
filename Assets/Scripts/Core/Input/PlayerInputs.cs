@@ -3,19 +3,23 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 
-
+[RequireComponent(typeof(SkillSet))]
 public class PlayerInputs : MonoBehaviour
 {
     private SkillSet skillSet;
     private SkillController skillController;
     private StatusSystem statusSystem;
-
+    private PlayerInput playerInput;
+    private PlayerAnimations playerAnimations;
     void Start()
     {
         skillSet = GetComponent<SkillSet>();
         skillController = GetComponent<SkillController>();
         statusSystem = GetComponent<StatusSystem>();
+        playerInput = GetComponent<PlayerInput>();
+        playerAnimations = GetComponent<PlayerAnimations>();
     }
+
     public void InvokeAttack(InputAction.CallbackContext context)
     {
         if (context.started)
@@ -48,32 +52,31 @@ public class PlayerInputs : MonoBehaviour
         if (context.started)
         {
             PlayerDelegates.Instance.OnBlockStart?.Invoke();
-            Debug.Log("block first pressed!");
+            //Debug.Log("block first pressed!");
             skillController.Interrupt();
             //OnSkillCancel?.Invoke();
-            //Debug.Log("skill canceled!");
+            Debug.Log("skill canceled!");
         }
         if (context.performed)
         {
-            Debug.Log("block was performed!");
+            //Debug.Log("block was performed!");
         }
         if (context.canceled)
         {
             PlayerDelegates.Instance.OnBlockCancel?.Invoke();
-            Debug.Log("block was canceled!");
+            //Debug.Log("block was canceled!");
         }
     }
     public void InvokeSkill(InputAction.CallbackContext context)
     {
-        Debug.Log(context.action.name);
-        int skillId = skillSet.GetSkillIdByActionName(context.action.name);
-        skillController.data = AssetDataManager.Instance.GetPlayerSkillById(skillId);
+        SkillData skillData = skillSet.GetSkillByActionName(context.action.name);
 
         if (context.started)
         {
-            skillController.TryCast();
+            skillController.TryCast(skillData, Vector3.zero);
             PlayerDelegates.Instance.OnSkillStart?.Invoke();
-            Debug.Log("skill first pressed!");
+            //Debug.Log(context.action.name + "pressed");
+            //Debug.Log("skill first pressed!");
         }
     }
     public void InvokeBreakFree(InputAction.CallbackContext context)
@@ -81,6 +84,47 @@ public class PlayerInputs : MonoBehaviour
         if (context.started)
         {
             Debug.Log("BreakFree pressed!");
+        }
+    }
+
+    public void ToggleInputSystem(InputAction.CallbackContext context)
+    {
+        string currentActionMap = playerInput.currentActionMap.name;
+        if (context.started)
+        {
+            if (currentActionMap == "Player")
+            {
+                SwitchToUIMap();
+            } else
+            {
+                SwitchToPlayerMap();
+            }
+        }
+    }
+
+    public void SwitchToPlayerMap()
+    {
+        // Switch to a new map, which automatically disables the previous one
+        playerInput.SwitchCurrentActionMap("Player");
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        //Time.timeScale = 1f; // Resumes game time
+        Debug.Log("ACTION MAP: switched to Player");
+    }
+    public void SwitchToUIMap()
+    {
+        // Switch to a new map, which automatically disables the previous one
+        playerInput.SwitchCurrentActionMap("UI");
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        //Time.timeScale = 0f; // Pauses game time
+        Debug.Log("ACTION MAP: switched to UI");
+    }
+    public void ToggleCombatPose(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            playerAnimations.ToggleCombatPose();
         }
     }
 }

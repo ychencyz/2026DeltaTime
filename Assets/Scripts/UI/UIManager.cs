@@ -5,15 +5,18 @@ using UnityEngine.InputSystem;
 
 public class UIManager : MonoBehaviour
 {
-    public GameObject TargetUI;
-    public GameObject MainActionUI;
-    public GameObject QuestUI;
-    public UIWindow InventoryUI;
-    public UIActionBar UIActionBar;
+    public static UIManager Instance { get; private set; }
+
+    //public GameObject TargetUI;
+    //public GameObject MainActionUI;
+    //public GameObject QuestUI;
+    //public UIWindow InventoryUI;
+    //public UIActionBar UIActionBar;
     public Action OnOpenDefaultLayout;
     //public Action OnSkillChanged;
 
-    public enum States {
+    public enum States
+    {
         Default,
         Inventory,
         Quest,
@@ -26,17 +29,35 @@ public class UIManager : MonoBehaviour
         {
 
         }
-        get {
+        get
+        {
             return _state;
         }
     }
-    //// Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    //private void OnEnable()
+    //{
+    //}
+    //private void OnDisable()
+    //{
+    //}
+
+    private void Awake()
     {
-        InventoryUI.Open();
-        //CloseAllUI();
-        UIActionBar.InitUIActionBar();
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
+    //// Start is called once before the first execution of Update after the MonoBehaviour is created
+    //void Start()
+    //{
+        //InventoryUI.Open();
+        //CloseAllUI();
+    //}
 
     //// Update is called once per frame
     //void Update()
@@ -45,9 +66,9 @@ public class UIManager : MonoBehaviour
     //}
     public void CloseAllUI()
     {
-        foreach (Transform childTransform in transform)
-        {
-            childTransform.gameObject.SetActive(false);
-        }
+        //foreach (Transform childTransform in transform)
+        //{
+        //    childTransform.gameObject.SetActive(false);
+        //}
     }
 }

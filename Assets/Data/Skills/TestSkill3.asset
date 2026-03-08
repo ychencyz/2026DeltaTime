@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: TestSkill3
   m_EditorClassIdentifier: 
   id: 2
+  state: 0
+  position: {x: 0, y: 0, z: 0}
+  displayName: Red Explosion
   anticipationTime: 0.15
-  recoveryTime: 0.3
+  recoveryTime: 0
   cooldownTime: 2
   damage: 10
   projectilePrefab: {fileID: 8378648546881499446, guid: 867c572a5be680d42a042d2349f10143, type: 3}

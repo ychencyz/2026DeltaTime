@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Windows;
+using static UnityEngine.GraphicsBuffer;
 
 /* Note: animations are called via the controller for both the character and capsule using animator null checks
  */
@@ -23,6 +25,7 @@ namespace StarterAssets
 
         [Tooltip("Acceleration and deceleration")]
         public float SpeedChangeRate = 10.0f;
+        public float InCombatSpeedChangeRate = 5.0f;
 
         public AudioClip LandingAudioClip;
         public AudioClip[] FootstepAudioClips;
@@ -82,6 +85,12 @@ namespace StarterAssets
         private float _rotationVelocity;
         private float _verticalVelocity;
         private float _terminalVelocity = 53.0f;
+        // 新變數[new Vars start]
+        private float _animationBlendVelocityX;
+        private float _animationBlendVelocityZ;
+        public Transform headBone;
+        public Quaternion headBoneOffset = Quaternion.Euler(0, 115, 288);
+        // 新變數[new Vars end]
 
         // timeout deltatime
         private float _jumpTimeoutDelta;
@@ -125,7 +134,7 @@ namespace StarterAssets
         private void Start()
         {
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
-            
+
             _hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<m_StarterAssetsInputs>();
@@ -145,13 +154,64 @@ namespace StarterAssets
             JumpAndGravity();
             GroundedCheck();
             Move();
+            SetVelocities();
         }
 
         private void LateUpdate()
         {
             CameraRotation();
+            if (_animator.GetBool("inCombat") == true)
+            {
+                OverrideLookDirectionInCombat();
+                FixInCombatHeadForward();
+            }
         }
 
+        //新增 [new functions start]
+        private void OverrideLookDirectionInCombat()
+        {
+            _targetRotation = _mainCamera.transform.eulerAngles.y;
+            transform.rotation = Quaternion.Euler(0.0f, _targetRotation, 0.0f);
+        }
+        private void FixInCombatHeadForward()
+        {
+            float headRotationSpeed = 5.0f;
+            Vector3 cameraForward = Camera.main.transform.forward;
+            cameraForward.y = 0;
+            if (cameraForward != Vector3.zero)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(cameraForward) * headBoneOffset;
+                headBone.rotation = Quaternion.Slerp(headBone.rotation, targetRotation, headRotationSpeed * Time.deltaTime);
+            }
+        }
+        public void SetVelocities()
+        {
+            float targetX = _input.move.x;
+            float targetZ = _input.move.y;
+            _animationBlendVelocityX = Mathf.Lerp(_animationBlendVelocityX, targetX, Time.deltaTime * InCombatSpeedChangeRate);
+            if (_animationBlendVelocityX > 0 && _animationBlendVelocityX < 0.001f) _animationBlendVelocityX = 0f;
+            if (_animationBlendVelocityX < 0 && _animationBlendVelocityX > -0.001f) _animationBlendVelocityX = 0f;
+            //cap at 0.69f if not sprint
+            if (!_input.sprint)
+            {
+                _animationBlendVelocityX = Mathf.Min(_animationBlendVelocityX, 0.75f);
+                _animationBlendVelocityX = Mathf.Max(_animationBlendVelocityX, -0.75f);
+            }
+            _animationBlendVelocityZ = Mathf.Lerp(_animationBlendVelocityZ, targetZ, Time.deltaTime * InCombatSpeedChangeRate);
+            if (_animationBlendVelocityZ > 0 && _animationBlendVelocityZ < 0.001f) _animationBlendVelocityZ = 0f;
+            if (_animationBlendVelocityZ < 0 && _animationBlendVelocityZ > -0.001f) _animationBlendVelocityZ = 0f;
+            //cap at 0.69f if not sprint
+            if (!_input.sprint)
+            {
+                _animationBlendVelocityZ = Mathf.Min(_animationBlendVelocityZ, 0.75f);
+                _animationBlendVelocityZ = Mathf.Max(_animationBlendVelocityZ, -0.75f);
+            }
+
+            _animator.SetFloat("Velocity X", _animationBlendVelocityX);
+            _animator.SetFloat("Velocity Z", _animationBlendVelocityZ);
+            //Debug.Log(_input.move.x + "," + _input.move.y + ">>> " + _animationBlendVelocityX + "," + _animationBlendVelocityZ);
+        }
+        //新增 [new functions end]
         private void AssignAnimationIDs()
         {
             _animIDSpeed = Animator.StringToHash("Speed");
@@ -196,7 +256,6 @@ namespace StarterAssets
             CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
                 _cinemachineTargetYaw, 0.0f);
         }
-
         private void Move()
         {
             // set target speed based on move speed, sprint speed and if sprint is pressed

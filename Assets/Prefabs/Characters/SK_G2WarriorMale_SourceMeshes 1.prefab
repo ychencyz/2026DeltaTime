@@ -3894,7 +3894,7 @@ GameObject:
   - component: {fileID: 4406946433451213799}
   - component: {fileID: 6111042265124323079}
   - component: {fileID: 360311076676958655}
-  - component: {fileID: 5179103556747659973}
+  - component: {fileID: 4466138419881234354}
   m_Layer: 3
   m_Name: SK_G2WarriorMale_SourceMeshes 1
   m_TagString: Untagged
@@ -4615,6 +4615,8 @@ MonoBehaviour:
   BottomClamp: -30
   CameraAngleOverride: 0
   LockCameraPosition: 0
+  headBone: {fileID: 0}
+  headBoneOffset: {x: 0.49573302, y: -0.6823181, z: 0.31581673, w: -0.43468451}
 --- !u!114 &1687929578821904696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4658,7 +4660,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c66c770ebf005294585e732d708cde51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 87e5df91195f31e4da1796f411833a11, type: 2}
 --- !u!114 &360311076676958655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4674,7 +4675,7 @@ MonoBehaviour:
   isStunned: 0
   canMove: 1
   canCast: 1
---- !u!114 &5179103556747659973
+--- !u!114 &4466138419881234354
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4686,12 +4687,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7137e9d3603938e4596c129a336b3f64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skill_1_id: 1
-  skill_2_id: 2
-  skill_3_id: 3
-  skill_4_id: 0
-  skill_5_id: 0
-  skill_ult_id: 0
+  _skill_1_id: 0
+  _skill_2_id: 0
+  _skill_3_id: 0
+  _skill_4_id: 0
+  _skill_5_id: 0
+  _skill_ult_id: 0
+  skill_1: {fileID: 0}
+  skill_2: {fileID: 0}
+  skill_3: {fileID: 0}
+  skill_4: {fileID: 0}
+  skill_5: {fileID: 0}
+  skill_ult: {fileID: 0}
 --- !u!1 &3212792526782511709
 GameObject:
   m_ObjectHideFlags: 0
@@ -6183,6 +6190,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3167344714979367088}
   - {fileID: 6213920610643864081}
   m_Father: {fileID: 7621444412263565432}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6246,7 +6254,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3167344714979367088}
   - {fileID: 8332420917731077247}
   m_Father: {fileID: 7621444412263565432}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7952,7 +7959,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3167344714979367088}
   m_Layer: 3
-  m_Name: GameObject
+  m_Name: WeaponSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7966,13 +7973,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7192011087178413457}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.011, y: -0.031, z: -0.034}
+  m_LocalRotation: {x: -0.18324862, y: 0.099183284, z: 0.037342753, w: 0.9773373}
+  m_LocalPosition: {x: -0.002501458, y: -0.059362873, z: -0.06418856}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6060741259711587258}
-  m_Father: {fileID: 4674609866253266684}
+  m_Father: {fileID: 8890445293659900224}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7317351650782178125
 GameObject:
