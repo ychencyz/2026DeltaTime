@@ -7,6 +7,8 @@ using UnityEngine;
 public class SkillSet : MonoBehaviour
 {
     [SerializeField]
+    int _light_attack_id = 4;
+    [SerializeField]
     int _skill_1_id = 0;
     [SerializeField]
     int _skill_2_id = 0;
@@ -19,6 +21,8 @@ public class SkillSet : MonoBehaviour
     [SerializeField]
     int _skill_ult_id = 0;
 
+    [Header("Auto Init")]
+    public SkillData light_attack;
     //[HideInInspector]
     public SkillData skill_1;
     //[HideInInspector]
@@ -32,6 +36,14 @@ public class SkillSet : MonoBehaviour
     //[HideInInspector]
     public SkillData skill_ult;
 
+    public int light_attack_id
+    {
+        get => _light_attack_id; set
+        {
+            light_attack = AssetDataManager.Instance.GetPlayerSkillById(value);
+            _light_attack_id = value;
+        }
+    }
     public int skill_1_id
     {
         get => _skill_1_id; set
@@ -89,7 +101,11 @@ public class SkillSet : MonoBehaviour
 
     private void OnValidate()
     {
-        setAllSkils();
+
+        if (AssetDataManager.Instance != null)
+        {
+            setAllSkils();
+        }
     }
     private void Start()
     {
@@ -98,6 +114,7 @@ public class SkillSet : MonoBehaviour
     }
     void setAllSkils()
     {
+        light_attack_id = _light_attack_id;
         skill_1_id = _skill_1_id;
         skill_2_id = _skill_2_id;
         skill_3_id = _skill_3_id;
@@ -109,6 +126,7 @@ public class SkillSet : MonoBehaviour
     {
         SkillData data = actionName switch
         {
+            "LightAttack" => light_attack,
             "Skill1" => skill_1,
             "Skill2" => skill_2,
             "Skill3" => skill_3,

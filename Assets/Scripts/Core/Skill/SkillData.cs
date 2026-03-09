@@ -1,6 +1,5 @@
 using UnityEngine;
 
-// 1. 數據層：使用 ScriptableObject 達成數據與邏輯解耦
 [CreateAssetMenu(fileName = "NewSkillData", menuName = "Skills/SkillData")]
 public class SkillData : AssetData
 {
@@ -12,6 +11,7 @@ public class SkillData : AssetData
     public float recoveryTime = 0f;     // 後搖
     public float cooldownTime = 2.0f;     // 冷卻
     public float damage = 10f;
-    public GameObject projectilePrefab;
+    public int actionId = -1;
+    public GameObject VFXPrefab;
     public Sprite icon;
 }

@@ -10,15 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 484ac7ae619563448a38778b151a0735, type: 3}
-  m_Name: TestSkill
+  m_Name: 5_TestSkill5
   m_EditorClassIdentifier: 
-  id: 1
+  id: 5
   state: 0
   position: {x: 0, y: 0, z: 0}
-  displayName: Crystal
+  displayName: HeavyAttack
   anticipationTime: 0.15
   recoveryTime: 0
   cooldownTime: 2
   damage: 10
-  projectilePrefab: {fileID: 584207449403360073, guid: b1ae5055f08b8284d9e996465d1d37e3, type: 3}
-  icon: {fileID: -292873078, guid: 96c81ca06bf9e7f42b0b0a9e62d492c5, type: 3}
+  actionId: -1
+  projectilePrefab: {fileID: 5034656251238326012, guid: 9de2fa19f0390d44491264d9cab8cec5, type: 3}
+  icon: {fileID: -1979897024, guid: a10849c8f0c3ef54f9efaf9d1effa924, type: 3}

@@ -22,40 +22,40 @@ public class PlayerInputs : MonoBehaviour
 
     public void InvokeAttack(InputAction.CallbackContext context)
     {
-        if (context.started)
-        {
-            PlayerDelegates.Instance.OnAttackStart?.Invoke();
-            //Debug.Log("Attack first pressed!");
-        }
+        //if (context.started)
+        //{
+        //    //Debug.Log("Attack --- context.started!");
+        //    //    PlayerDelegates.Instance.OnAttackStart?.Invoke();
+        //}
         if (context.performed)
         {
+            //Debug.Log("Attack --- context.performed!");
             if (context.interaction is TapInteraction)
             {
-                PlayerDelegates.Instance.OnLightAttack?.Invoke();
-                //Debug.Log("LightAttack Tap performed!");
+                //Debug.Log("LightAttack --- Tap performed!");
+                SkillData skillData = skillSet.GetSkillByActionName("LightAttack");
+                skillController.TryCast(skillData, Vector3.zero);
             }
             else if (context.interaction is HoldInteraction)
             {
-                PlayerDelegates.Instance.OnHeavyAttack?.Invoke();
-                //Debug.Log("HeavyAttack Hold performed!");
+                //Debug.Log("HeavyAttack Hold performed! ---" + context.action.name);
             }
         }
-        //注:canceled會在tap轉hold中間call一次
-        if (context.canceled)
-        {
-            PlayerDelegates.Instance.OnAttackCancel?.Invoke();
-            //Debug.Log("Attack was canceled!");
-        }
+        //////注:canceled會在tap轉hold中間call一次
+        //if (context.canceled)
+        //{
+        //    Debug.Log("Attack --- context.canceled!");
+        //    //    PlayerDelegates.Instance.OnAttackCancel?.Invoke();
+        //}
     }
     public void InvokeBlock(InputAction.CallbackContext context)
     {
         if (context.started)
         {
-            PlayerDelegates.Instance.OnBlockStart?.Invoke();
+            //PlayerDelegates.Instance.OnBlockStart?.Invoke();
             //Debug.Log("block first pressed!");
             skillController.Interrupt();
-            //OnSkillCancel?.Invoke();
-            Debug.Log("skill canceled!");
+            //Debug.Log("skill canceled!");
         }
         if (context.performed)
         {
@@ -63,7 +63,7 @@ public class PlayerInputs : MonoBehaviour
         }
         if (context.canceled)
         {
-            PlayerDelegates.Instance.OnBlockCancel?.Invoke();
+            //PlayerDelegates.Instance.OnBlockCancel?.Invoke();
             //Debug.Log("block was canceled!");
         }
     }
@@ -74,7 +74,6 @@ public class PlayerInputs : MonoBehaviour
         if (context.started)
         {
             skillController.TryCast(skillData, Vector3.zero);
-            PlayerDelegates.Instance.OnSkillStart?.Invoke();
             //Debug.Log(context.action.name + "pressed");
             //Debug.Log("skill first pressed!");
         }
@@ -95,7 +94,8 @@ public class PlayerInputs : MonoBehaviour
             if (currentActionMap == "Player")
             {
                 SwitchToUIMap();
-            } else
+            }
+            else
             {
                 SwitchToPlayerMap();
             }

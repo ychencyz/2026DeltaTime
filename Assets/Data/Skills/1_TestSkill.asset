@@ -10,15 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 484ac7ae619563448a38778b151a0735, type: 3}
-  m_Name: TestSkill2
+  m_Name: 1_TestSkill
   m_EditorClassIdentifier: 
-  id: 3
+  id: 1
   state: 0
   position: {x: 0, y: 0, z: 0}
-  displayName: Meteor
+  displayName: Crystal
   anticipationTime: 0.15
   recoveryTime: 0
-  cooldownTime: 5
-  damage: 10
-  projectilePrefab: {fileID: 7957833072274404953, guid: 3355f6bfa6db8b24281b827de929694c, type: 3}
-  icon: {fileID: -576254445, guid: fc854d3eb3447eb438e4d2962b764fa6, type: 3}
+  cooldownTime: 2
+  damage: 100
+  actionId: -1
+  VFXPrefab: {fileID: 176822597162087251, guid: 46009f57772e5e743bec9df57a49ed66, type: 3}
+  icon: {fileID: -292873078, guid: 96c81ca06bf9e7f42b0b0a9e62d492c5, type: 3}

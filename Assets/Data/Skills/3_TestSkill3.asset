@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 484ac7ae619563448a38778b151a0735, type: 3}
-  m_Name: TestSkill3
+  m_Name: 3_TestSkill3
   m_EditorClassIdentifier: 
   id: 2
   state: 0
@@ -19,6 +19,7 @@ MonoBehaviour:
   anticipationTime: 0.15
   recoveryTime: 0
   cooldownTime: 2
-  damage: 10
-  projectilePrefab: {fileID: 8378648546881499446, guid: 867c572a5be680d42a042d2349f10143, type: 3}
+  damage: 100
+  actionId: -1
+  VFXPrefab: {fileID: 8378648546881499446, guid: 867c572a5be680d42a042d2349f10143, type: 3}
   icon: {fileID: -981660072, guid: a09ef8e38c9f80d47b377bd11ec84037, type: 3}

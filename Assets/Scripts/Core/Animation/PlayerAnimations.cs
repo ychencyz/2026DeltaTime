@@ -18,13 +18,23 @@ public class PlayerAnimations : MonoBehaviour
     }
     private void OnEnable()
     {
-        PlayerDelegates.Instance.OnLightAttack += LightAttackAnimation;
+        PlayerDelegates.Instance.OnSkillStart += SkillAnimation;
+        PlayerDelegates.Instance.OnSkillInterrupted += InterruptAnimation;
     }
     private void OnDisable()
     {
-        PlayerDelegates.Instance.OnLightAttack -= LightAttackAnimation;
+        PlayerDelegates.Instance.OnSkillStart += SkillAnimation;
+        PlayerDelegates.Instance.OnSkillInterrupted -= InterruptAnimation;
     }
+    private void SkillAnimation(SkillSet SkillSet, SkillData skillData)
+    {
+        if (animator.GetBool("inCombat") != true) return;
 
+        if (skillData.actionId > 0)
+        {
+            animator.SetInteger("Action", skillData.actionId);
+        }
+    }
     enum WeaponState
     {
         Sheath = -1,
@@ -51,8 +61,6 @@ public class PlayerAnimations : MonoBehaviour
             playerWeaponBackSlot.SetActive(true);
             animator.SetInteger("Action", -1);
         }
-
-        Debug.Log("weapon Switched");
     }
 
     public void FootL()
@@ -71,12 +79,9 @@ public class PlayerAnimations : MonoBehaviour
     {
         animator.SetInteger("Action", -1);
     }
-    private void LightAttackAnimation()
+    private void InterruptAnimation(SkillSet SkillSet, SkillData skillData)
     {
-        if (animator.GetBool("inCombat") == true)
-        {
-            animator.SetInteger("Action", 1);
-        }
+        animator.SetInteger("Action", -1);
     }
     public void ToggleCombatPose()
     {

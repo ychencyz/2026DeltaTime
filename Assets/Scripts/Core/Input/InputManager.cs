@@ -24,16 +24,16 @@ public class InputManager : MonoBehaviour
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        //Debug.Log(playerInput.defaultActionMap);
-        //TODO: ±±¨îplayer inputs map
+    //void Start()
+    //{
+    //    //Debug.Log(playerInput.defaultActionMap);
+    //    //TODO: ±±¨îplayer inputs map
 
-        //    playerInput.currentActionMap?.Enable();
-        //Debug.Log(playerInput.actions["Skill1"].ToShortString());
-        //Debug.Log(playerInput.actions["Player"]);
-        Debug.Log(playerInput.currentActionMap);
-    }
+    //    //    playerInput.currentActionMap?.Enable();
+    //    //Debug.Log(playerInput.actions["Skill1"].ToShortString());
+    //    //Debug.Log(playerInput.actions["Player"]);
+    //    Debug.Log(playerInput.currentActionMap);
+    //}
 
     //// Update is called once per frame
     //void Update()

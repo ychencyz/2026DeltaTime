@@ -11,18 +11,6 @@ public class UIActionBar : MonoBehaviour
     public GameObject go_UltimateSlot;
     public List<GameObject> ActionBarSkillSlots;
 
-    //// Start is called once before the first execution of Update after the MonoBehaviour is created
-
-
-    //void Start()
-    //{
-    //}
-
-    //// Update is called once per frame
-    //void Update()
-    //{
-
-    //}
     private void OnEnable()
     {
         PlayerDelegates.Instance.OnSkillCooldownStarted += StartCountDown;
