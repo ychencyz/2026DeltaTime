@@ -20,6 +20,8 @@ MonoBehaviour:
   recoveryTime: 0
   cooldownTime: 2
   damage: 100
+  targetType: 2
   actionId: -1
+  actionClip: {fileID: 0}
   VFXPrefab: {fileID: 8378648546881499446, guid: 867c572a5be680d42a042d2349f10143, type: 3}
   icon: {fileID: -981660072, guid: a09ef8e38c9f80d47b377bd11ec84037, type: 3}

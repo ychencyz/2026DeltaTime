@@ -33,7 +33,7 @@ public class UISkillsManager : MonoBehaviour
             if (skillSlot.isSubscribingToSkillSet())
             {
                 string actionName = skillSet.GetActionNameBySkillIndex(skillSlot.index);
-                string keyName = GameData.Instance.GetActionMapPlayerKeyNameByActionName(actionName);
+                string keyName = GameRuntimeData.Instance.GetActionMapPlayerKeyNameByActionName(actionName);
                 skillSlot.SetControlKey(keyName);
                 skillSlot.Disable();
             }

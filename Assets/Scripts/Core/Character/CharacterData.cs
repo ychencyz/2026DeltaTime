@@ -15,4 +15,5 @@ public class CharacterData : AssetData
     public string displayName = "default Name";
     public int initialHp;
     public int initialMaxHp;
+    public float radius = 0f;
 }

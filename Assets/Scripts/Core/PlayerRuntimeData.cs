@@ -1,9 +1,8 @@
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class PlayerRuntimeData : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
-
+    public static PlayerRuntimeData Instance { get; private set; }
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -13,7 +12,6 @@ public class GameManager : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(this.gameObject); 
         }
     }
 }

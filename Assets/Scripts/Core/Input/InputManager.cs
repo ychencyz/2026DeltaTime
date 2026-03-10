@@ -1,8 +1,5 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEngine.Rendering.DebugUI;
 
 public class InputManager : MonoBehaviour
 {
@@ -23,7 +20,6 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     //void Start()
     //{
     //    //Debug.Log(playerInput.defaultActionMap);
@@ -33,11 +29,5 @@ public class InputManager : MonoBehaviour
     //    //Debug.Log(playerInput.actions["Skill1"].ToShortString());
     //    //Debug.Log(playerInput.actions["Player"]);
     //    Debug.Log(playerInput.currentActionMap);
-    //}
-
-    //// Update is called once per frame
-    //void Update()
-    //{
-
     //}
 }

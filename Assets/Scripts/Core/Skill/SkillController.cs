@@ -8,12 +8,14 @@ public enum SkillState { Idle, Anticipation, Execution, Recovery, Cooldown }
 
 public class SkillController : MonoBehaviour
 {
+    private Combat combat;
     private SkillSet skillSet;
     private SkillData data;
 
     private void Start()
     {
         skillSet = GetComponent<SkillSet>();
+        combat = GetComponent<Combat>();
     }
     // 外部進入點
     public void TryCast(SkillData _data, Vector3 position)
@@ -72,19 +74,6 @@ public class SkillController : MonoBehaviour
     }
     private void ExecuteSkill()
     {
-        SetTargetPosition(out data.position);
-        if(data.VFXPrefab != null)
-        {
-            GameObject obj = Instantiate(data.VFXPrefab, data.position, Quaternion.identity);
-            float animationDuration = obj.GetComponent<ParticleSystem>().main.duration;
-            Destroy(obj, animationDuration);
-        }
-
-        Debug.Log($"Skill [{data.displayName}] Excuted!");
-    }
-    private void SetTargetPosition(out Vector3 targetPosition)
-    {
-        // TODO: set target position
-        targetPosition = new Vector3(-1.59f, 0f, 2.421f);
+        combat.Attack(data);
     }
 }

@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 484ac7ae619563448a38778b151a0735, type: 3}
-  m_Name: 1_TestSkill
+  m_Name: 6_Skill
   m_EditorClassIdentifier: 
-  id: 1
+  id: 6
   state: 0
   position: {x: 0, y: 0, z: 0}
-  displayName: Crystal
+  displayName: throw rock
   anticipationTime: 0.15
   recoveryTime: 0
   cooldownTime: 2
-  damage: 100
-  targetType: 2
-  actionId: -1
-  actionClip: {fileID: 0}
-  VFXPrefab: {fileID: 176822597162087251, guid: 46009f57772e5e743bec9df57a49ed66, type: 3}
-  icon: {fileID: -292873078, guid: 96c81ca06bf9e7f42b0b0a9e62d492c5, type: 3}
+  damage: 10
+  targetType: 1
+  actionId: 2
+  actionClip: {fileID: 3094330708855449807, guid: 39e2b573902399d4fbd58117e24ea1d2, type: 3}
+  VFXPrefab: {fileID: 1289543790355709915, guid: b99922c2f59b1a542bdd06ae8bee47ae, type: 3}
+  icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}

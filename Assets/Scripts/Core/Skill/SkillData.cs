@@ -1,5 +1,12 @@
 using UnityEngine;
 
+public enum SkillTargetType
+{
+    Self,
+    SelfFollow,
+    Target,
+    TargetFollow,
+}
 [CreateAssetMenu(fileName = "NewSkillData", menuName = "Skills/SkillData")]
 public class SkillData : AssetData
 {
@@ -11,6 +18,7 @@ public class SkillData : AssetData
     public float recoveryTime = 0f;     // «á·n
     public float cooldownTime = 2.0f;     // §N«o
     public float damage = 10f;
+    public SkillTargetType targetType;
     public int actionId = -1;
     public AnimationClip actionClip;
     public GameObject VFXPrefab;
