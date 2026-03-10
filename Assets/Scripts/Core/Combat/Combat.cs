@@ -19,25 +19,25 @@ public class Combat : MonoBehaviour
     private void SetTargetPosition(out Vector3 targetPosition, SkillData data)
     {
         // TODO: set target position
-        if (data.targetType==SkillTargetType.Self)
+        if (data.targetType == SkillTargetType.Self)
         {
             targetPosition=transform.position;
         }
-        if (data.targetType == SkillTargetType.SelfFollow)
+        else if (data.targetType == SkillTargetType.SelfFollow)
         {
             targetPosition = transform.position;
         }
-        if (data.targetType == SkillTargetType.Target)
+        else if (data.targetType == SkillTargetType.Target)
         {
             targetPosition = transform.position;
         }
-        if (data.targetType == SkillTargetType.TargetFollow)
+        else if (data.targetType == SkillTargetType.TargetFollow)
         {
             targetPosition = transform.position;
         }
         else
         {
-            throw new Exception("targetType not found");
+            throw new Exception("targetType not found, skill id:" + data.id+ ", SkillTargetType:" + data.targetType);
         }
     }
 

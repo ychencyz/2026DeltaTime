@@ -172,9 +172,9 @@ public class SkillSet : MonoBehaviour
         else if (id == skill_5_id) return 4;
         //else if (id == skill_ult_id) return 5;
         else {
-            Debug.Log("GetSkillIndexBySkillId: "+ id);
             return -1;
-            //throw new Exception("skill Not Found")
-        };
+            //throw new Exception("skill Not Found, SkillId:" + id);
+        }
+        ;
     }
 }

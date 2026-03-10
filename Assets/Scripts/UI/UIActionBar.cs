@@ -24,8 +24,11 @@ public class UIActionBar : MonoBehaviour
     void StartCountDown(SkillSet skillSet, SkillData data)
     {
         int index = skillSet.GetSkillIndexBySkillId(data.id);
-        SkillSlot skillSlot = ActionBarSkillSlots[index].GetComponent<SkillSlot>();
-        skillSlot.StartCountDown(data.recoveryTime + data.cooldownTime);
+        if (index > -1)
+        {
+            SkillSlot skillSlot = ActionBarSkillSlots[index].GetComponent<SkillSlot>();
+            skillSlot.StartCountDown(data.recoveryTime + data.cooldownTime);
+        }
     }
     void StopCountDown(SkillSet skillSet, SkillData data)
     {
