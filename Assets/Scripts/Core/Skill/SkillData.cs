@@ -12,6 +12,7 @@ public class SkillData : AssetData
     public float cooldownTime = 2.0f;     // §N«o
     public float damage = 10f;
     public int actionId = -1;
+    public AnimationClip actionClip;
     public GameObject VFXPrefab;
     public Sprite icon;
 }

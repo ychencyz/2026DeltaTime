@@ -21,5 +21,6 @@ MonoBehaviour:
   cooldownTime: 1
   damage: 50
   actionId: 1
-  projectilePrefab: {fileID: 0}
+  actionClip: {fileID: 7400000, guid: 96ed5e4a6dc56fe4c9c2de75fc8a077c, type: 3}
+  VFXPrefab: {fileID: 0}
   icon: {fileID: -1979897024, guid: a10849c8f0c3ef54f9efaf9d1effa924, type: 3}

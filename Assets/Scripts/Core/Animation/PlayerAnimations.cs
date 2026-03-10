@@ -1,5 +1,6 @@
 using RPGCharacterAnims.Lookups;
 using System;
+using System.Collections;
 using System.Drawing;
 using UnityEngine;
 
@@ -26,6 +27,7 @@ public class PlayerAnimations : MonoBehaviour
         PlayerDelegates.Instance.OnSkillStart += SkillAnimation;
         PlayerDelegates.Instance.OnSkillInterrupted -= InterruptAnimation;
     }
+    private Coroutine actionAnimationRoutine;
     private void SkillAnimation(SkillSet SkillSet, SkillData skillData)
     {
         if (animator.GetBool("inCombat") != true) return;
@@ -33,7 +35,21 @@ public class PlayerAnimations : MonoBehaviour
         if (skillData.actionId > 0)
         {
             animator.SetInteger("Action", skillData.actionId);
+            AnimationClip actionClip = skillData.actionClip;
+            float clipLength = actionClip.length - 0.2f;
+            actionAnimationRoutine = StartCoroutine(CountdownRoutine(clipLength));
         }
+    }
+    private IEnumerator CountdownRoutine(float _countDownFrom)
+    {
+        float currentTime = _countDownFrom;
+        float interval = 0.1f;
+        while (currentTime > 0)
+        {
+            yield return new WaitForSeconds(interval);
+            currentTime -= interval;
+        }
+        animator.SetInteger("Action", -1);
     }
     enum WeaponState
     {
@@ -75,12 +91,9 @@ public class PlayerAnimations : MonoBehaviour
     {
         //佔位防止報錯
     }
-    public void ActionDoneInCombat()
-    {
-        animator.SetInteger("Action", -1);
-    }
     private void InterruptAnimation(SkillSet SkillSet, SkillData skillData)
     {
+        StopCoroutine(actionAnimationRoutine);
         animator.SetInteger("Action", -1);
     }
     public void ToggleCombatPose()
