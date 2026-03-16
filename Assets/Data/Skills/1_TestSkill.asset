@@ -23,5 +23,7 @@ MonoBehaviour:
   targetType: 2
   actionId: -1
   actionClip: {fileID: 0}
+  currentSkillAction: 0
+  skillActionList: []
   VFXPrefab: {fileID: 176822597162087251, guid: 46009f57772e5e743bec9df57a49ed66, type: 3}
   icon: {fileID: -292873078, guid: 96c81ca06bf9e7f42b0b0a9e62d492c5, type: 3}

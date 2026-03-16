@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum SkillTargetType
@@ -7,11 +8,20 @@ public enum SkillTargetType
     Target,
     TargetFollow,
 }
+[System.Serializable]
+public class SkillAnimation
+{
+    public int actionId;
+    public AnimationClip actionClip;
+}
 [CreateAssetMenu(fileName = "NewSkillData", menuName = "Skills/SkillData")]
 public class SkillData : AssetData
 {
+    [HideInInspector]
     public SkillState state = SkillState.Idle;
+    [HideInInspector]
     public Vector3 position = Vector3.zero;
+    [HideInInspector]
     public Coroutine skillRoutine;
     public string displayName = "default Name";
     public float anticipationTime = 0.15f; // «e·n
@@ -21,6 +31,9 @@ public class SkillData : AssetData
     public SkillTargetType targetType;
     public int actionId = -1;
     public AnimationClip actionClip;
+    [HideInInspector]
+    public int currentSkillAction;
+    public List<SkillAnimation> skillActionList;
     public GameObject VFXPrefab;
     public Sprite icon;
 }
