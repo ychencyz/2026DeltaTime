@@ -26,19 +26,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2855602832368863112, guid: 8e10d6581ca69b84d9fdf56f0d031613, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.59
+      value: -17.25
       objectReference: {fileID: 0}
     - target: {fileID: 2855602832368863112, guid: 8e10d6581ca69b84d9fdf56f0d031613, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 271.655
       objectReference: {fileID: 0}
     - target: {fileID: 2855602832368863112, guid: 8e10d6581ca69b84d9fdf56f0d031613, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.421
+      value: -142.16
       objectReference: {fileID: 0}
     - target: {fileID: 2855602832368863112, guid: 8e10d6581ca69b84d9fdf56f0d031613, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.10526768
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 2855602832368863112, guid: 8e10d6581ca69b84d9fdf56f0d031613, type: 3}
       propertyPath: m_LocalRotation.x
@@ -46,7 +46,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2855602832368863112, guid: 8e10d6581ca69b84d9fdf56f0d031613, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.99444395
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2855602832368863112, guid: 8e10d6581ca69b84d9fdf56f0d031613, type: 3}
       propertyPath: m_LocalRotation.z
@@ -58,7 +58,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2855602832368863112, guid: 8e10d6581ca69b84d9fdf56f0d031613, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 192.085
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 2855602832368863112, guid: 8e10d6581ca69b84d9fdf56f0d031613, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -216,7 +216,27 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2855602832369097640, guid: 8e10d6581ca69b84d9fdf56f0d031613, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5725308598575908602}
+    - targetCorrespondingSourceObject: {fileID: 2855602832369097640, guid: 8e10d6581ca69b84d9fdf56f0d031613, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4953013288685841990}
+    - targetCorrespondingSourceObject: {fileID: 2855602832369097640, guid: 8e10d6581ca69b84d9fdf56f0d031613, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4744389589981076011}
+    - targetCorrespondingSourceObject: {fileID: 2855602832369097640, guid: 8e10d6581ca69b84d9fdf56f0d031613, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9089381943174788061}
+    - targetCorrespondingSourceObject: {fileID: 2855602832369097640, guid: 8e10d6581ca69b84d9fdf56f0d031613, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5636686470782368627}
+    - targetCorrespondingSourceObject: {fileID: 2855602832369097640, guid: 8e10d6581ca69b84d9fdf56f0d031613, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5078413607450155050}
   m_SourcePrefab: {fileID: 100100000, guid: 8e10d6581ca69b84d9fdf56f0d031613, type: 3}
+--- !u!4 &6158398996593494852 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2855602832368863112, guid: 8e10d6581ca69b84d9fdf56f0d031613, type: 3}
+  m_PrefabInstance: {fileID: 8274841940900564172}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6158398996593530724 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2855602832369097640, guid: 8e10d6581ca69b84d9fdf56f0d031613, type: 3}
@@ -288,3 +308,129 @@ CapsuleCollider:
   m_Height: 1.9
   m_Direction: 1
   m_Center: {x: 0, y: 0.94, z: 0}
+--- !u!114 &4953013288685841990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6158398996593530724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7eaee66a59b17c44ca54f7ee15621f2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waypoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  useWaypoints: 1
+  patrolSpeed: 2
+  stopDistance: 0.5
+  detectionRange: 20
+  attackRange: 2
+  viewAngle: 120
+  attackCooldown: 2
+  attackDamage: 15
+  attackDelay: 0.5
+  useSurroundSlot: 1
+  surroundRadiusMultiplier: 0.9
+  attackTelegraphPrefab: {fileID: 8505756351132631287, guid: 11db1e65e5754ec4a903822671640398, type: 3}
+  attackTelegraphOffset: {x: 0, y: 0.05, z: 0}
+  defense: 5
+--- !u!114 &4744389589981076011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6158398996593530724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5830083d0212d6468277f13567b1c25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sectorDecalPrefab: {fileID: 107897314372333534, guid: 11ac099f6446ee244b674eb7d699e6b9, type: 3}
+  spawnPoint: {fileID: 6158398996593494852}
+  spawnOffset: {x: 0, y: 0.05, z: 0}
+  decalDuration: 2
+  sectorDecal: {fileID: 0}
+--- !u!114 &9089381943174788061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6158398996593530724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7eaee66a59b17c44ca54f7ee15621f2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waypoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  useWaypoints: 1
+  patrolSpeed: 2
+  stopDistance: 0.5
+  detectionRange: 20
+  attackRange: 2
+  viewAngle: 120
+  attackCooldown: 2
+  attackDamage: 15
+  attackDelay: 0.5
+  useSurroundSlot: 1
+  surroundRadiusMultiplier: 0.9
+  attackTelegraphPrefab: {fileID: 8505756351132631287, guid: 11db1e65e5754ec4a903822671640398, type: 3}
+  attackTelegraphOffset: {x: 0, y: 0.05, z: 0}
+  defense: 5
+--- !u!114 &5636686470782368627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6158398996593530724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7eaee66a59b17c44ca54f7ee15621f2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waypoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  useWaypoints: 1
+  patrolSpeed: 2
+  stopDistance: 0.5
+  detectionRange: 20
+  attackRange: 2
+  viewAngle: 120
+  attackCooldown: 2
+  attackDamage: 15
+  attackDelay: 0.5
+  useSurroundSlot: 1
+  surroundRadiusMultiplier: 0.9
+  attackTelegraphPrefab: {fileID: 8505756351132631287, guid: 11db1e65e5754ec4a903822671640398, type: 3}
+  attackTelegraphOffset: {x: 0, y: 0.05, z: 0}
+  defense: 5
+--- !u!114 &5078413607450155050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6158398996593530724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5830083d0212d6468277f13567b1c25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sectorDecalPrefab: {fileID: 107897314372333534, guid: 11ac099f6446ee244b674eb7d699e6b9, type: 3}
+  spawnPoint: {fileID: 6158398996593494852}
+  spawnOffset: {x: 0, y: 0.05, z: 0}
+  decalDuration: 2
+  sectorDecal: {fileID: 0}

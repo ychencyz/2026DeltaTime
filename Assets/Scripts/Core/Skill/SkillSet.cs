@@ -9,6 +9,8 @@ public class SkillSet : MonoBehaviour
     [SerializeField]
     int _light_attack_id = 4;
     [SerializeField]
+    int _heavy_attack_id = 0;
+    [SerializeField]
     int _skill_1_id = 0;
     [SerializeField]
     int _skill_2_id = 0;
@@ -23,6 +25,7 @@ public class SkillSet : MonoBehaviour
 
     [Header("Auto Init")]
     public SkillData light_attack;
+    public SkillData heavy_attack;
     //[HideInInspector]
     public SkillData skill_1;
     //[HideInInspector]
@@ -42,6 +45,14 @@ public class SkillSet : MonoBehaviour
         {
             light_attack = AssetDataManager.Instance.GetPlayerSkillById(value);
             _light_attack_id = value;
+        }
+    }
+    public int heavy_attack_id
+    {
+        get => _heavy_attack_id; set
+        {
+            heavy_attack = AssetDataManager.Instance.GetPlayerSkillById(value);
+            _heavy_attack_id = value;
         }
     }
     public int skill_1_id
@@ -115,6 +126,7 @@ public class SkillSet : MonoBehaviour
     void setAllSkils()
     {
         light_attack_id = _light_attack_id;
+        heavy_attack_id = _heavy_attack_id;
         skill_1_id = _skill_1_id;
         skill_2_id = _skill_2_id;
         skill_3_id = _skill_3_id;
@@ -127,6 +139,7 @@ public class SkillSet : MonoBehaviour
         SkillData data = actionName switch
         {
             "LightAttack" => light_attack,
+            "HeavyAttack" => heavy_attack,
             "Skill1" => skill_1,
             "Skill2" => skill_2,
             "Skill3" => skill_3,

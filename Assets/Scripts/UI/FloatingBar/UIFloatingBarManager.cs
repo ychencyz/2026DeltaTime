@@ -11,6 +11,8 @@ public class UIFloatingBarManager : MonoBehaviour
     private void Awake()
     {
         floatingBarList = FindObjectsByType<UIFloatingBarElement>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        if (mainCamera == null)
+            mainCamera = Camera.main;
     }
     void Start()
     {
@@ -26,10 +28,10 @@ public class UIFloatingBarManager : MonoBehaviour
         {
             foreach (UIFloatingBarElement barElement in floatingBarList)
             {
+                if (barElement == null) continue;
                 GameObject go_Npc = barElement.gameObject;
-                if (go_Npc.activeSelf == false) continue;
+                if (go_Npc == null || !go_Npc.activeSelf) continue;
                 UpdateTransformWorld(barElement, go_Npc);
-                //Debug.Log("LateUpdate:" + go_Npc.transform.position);
             }
         }
     }

@@ -1,8 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
-using RPGCharacterAnims.Lookups;
 using UnityEngine;
 
 public class PlayerAnimations : MonoBehaviour
@@ -25,48 +22,20 @@ public class PlayerAnimations : MonoBehaviour
     }
     private void OnDisable()
     {
-        PlayerDelegates.Instance.OnSkillStart += SkillAnimation;
+        PlayerDelegates.Instance.OnSkillStart -= SkillAnimation;
         PlayerDelegates.Instance.OnSkillInterrupted -= InterruptAnimation;
     }
     private Coroutine actionAnimationRoutine;
     private void SkillAnimation(SkillSet SkillSet, SkillData skillData)
     {
         if (animator.GetBool("inCombat") != true) return;
-        if (skillData.skillActionList == null && skillData.actionId <= 0) return;
 
-        if (skillData.skillActionList != null) {
-            int targetActionId = FindNextActionId(skillData);
-            // TODO:
-            //animator.SetInteger("Action", skillData.actionId);
-            //AnimationClip actionClip = skillData.actionClip;
-            //float clipLength = actionClip.length - 0.2f;
-            //actionAnimationRoutine = StartCoroutine(CountdownRoutine(clipLength));
-        }
-        else
+        if (skillData.actionId > 0)
         {
             animator.SetInteger("Action", skillData.actionId);
             AnimationClip actionClip = skillData.actionClip;
             float clipLength = actionClip.length - 0.2f;
             actionAnimationRoutine = StartCoroutine(CountdownRoutine(clipLength));
-        }
-    }
-    private int FindNextActionId(SkillData skillData)
-    {
-        //length = 1
-        if(skillData.skillActionList.Count == 1)
-        {
-
-        }
-        if (skillData.currentSkillAction == null)
-        {
-            int targetActionId = skillData.skillActionList[0].actionId;
-            skillData.currentSkillAction = targetActionId;
-            return targetActionId;
-        }
-        else
-        {
-            //find next skill action
-            return 1;
         }
     }
     private IEnumerator CountdownRoutine(float _countDownFrom)

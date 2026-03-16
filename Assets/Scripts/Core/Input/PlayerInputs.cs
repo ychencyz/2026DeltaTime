@@ -38,10 +38,14 @@ public class PlayerInputs : MonoBehaviour
             }
             else if (context.interaction is HoldInteraction)
             {
-                //Debug.Log("HeavyAttack Hold performed! ---" + context.action.name);
+                SkillData heavySkillData = skillSet.GetSkillByActionName("HeavyAttack");
+                if (heavySkillData != null)
+                {
+                    skillController.TryCast(heavySkillData, Vector3.zero);
+                }
             }
         }
-        //////ª`:canceled·|¦btapÂàhold¤¤¶¡call¤@¦¸
+        //////ï¿½`:canceledï¿½|ï¿½btapï¿½ï¿½holdï¿½ï¿½ï¿½ï¿½callï¿½@ï¿½ï¿½
         //if (context.canceled)
         //{
         //    Debug.Log("Attack --- context.canceled!");
@@ -52,19 +56,12 @@ public class PlayerInputs : MonoBehaviour
     {
         if (context.started)
         {
-            //PlayerDelegates.Instance.OnBlockStart?.Invoke();
-            //Debug.Log("block first pressed!");
             skillController.Interrupt();
-            //Debug.Log("skill canceled!");
-        }
-        if (context.performed)
-        {
-            //Debug.Log("block was performed!");
+            statusSystem.isBlocking = true;
         }
         if (context.canceled)
         {
-            //PlayerDelegates.Instance.OnBlockCancel?.Invoke();
-            //Debug.Log("block was canceled!");
+            statusSystem.isBlocking = false;
         }
     }
     public void InvokeSkill(InputAction.CallbackContext context)
@@ -82,7 +79,7 @@ public class PlayerInputs : MonoBehaviour
     {
         if (context.started)
         {
-            Debug.Log("BreakFree pressed!");
+            statusSystem.BreakFree();
         }
     }
 
