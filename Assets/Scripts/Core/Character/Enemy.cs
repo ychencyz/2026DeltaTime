@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
     public int hp
     {
         get => _hp;
-        private set
+        set
         {
             _hp = value;
             barElement.UpdateHealthBar(_hp, _maxHp);
@@ -21,7 +21,7 @@ public class Enemy : MonoBehaviour
     public int maxHp
     {
         get => _maxHp;
-        private set
+        set
         {
             _maxHp = value;
             barElement.UpdateHealthBar(_hp, _maxHp);
@@ -29,7 +29,7 @@ public class Enemy : MonoBehaviour
     }
     private void OnValidate()
     {
-        if (barElement!=null && barElement.initialized)
+        if (barElement != null && barElement.initialized)
         {
             hp = _hp;
             maxHp = _maxHp;
@@ -44,4 +44,10 @@ public class Enemy : MonoBehaviour
         barElement.SetInitialHp(_hp, _maxHp);
         barElement.SetInitialName(characterIdentifier.data.displayName);
     }
+
+    //private void FixedUpdate()
+    //{
+    //    hp -=1;
+    //    //Debug.Log($"hp: {_hp}");
+    //}
 }

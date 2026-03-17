@@ -36,7 +36,7 @@ public class EnemyPatrol : MonoBehaviour, ICombatTarget
     private CharacterIdentifier characterIdentifier;
     private Transform playerTransform;
     private ICombatTarget playerTarget; // 改用 ICombatTarget 介面
-    private UIFloatingBarElement floatingBar;
+    //private UIFloatingBarElement floatingBar;
     private NavMeshAgent navMeshAgent;
 
     private int currentWaypointIndex = 0;
@@ -47,22 +47,26 @@ public class EnemyPatrol : MonoBehaviour, ICombatTarget
     private bool isAttacking = false;
     private IEnumerator attackCoroutine;
 
-    private int _hp;
-    private int _maxHp;
+    //private int _hp;
+    //private int _maxHp;
     private bool _isDead = false;
     private Vector3 _spawnPosition;
     private float _nextMoveWarningTime = 0f;
     private float _surroundAngleOffset;
 
+    private float distanceToPlayer;
+    private EnemySkillController skillController;
+    private EnemySkillSet skillSet;
     private void Start()
     {
         _spawnPosition = transform.position;
         enemyComponent = GetComponent<Enemy>();
         characterIdentifier = GetComponent<CharacterIdentifier>();
-        floatingBar = GetComponent<UIFloatingBarElement>();
+        //floatingBar = GetComponent<UIFloatingBarElement>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         _surroundAngleOffset = Mathf.Abs(GetInstanceID()) % 360f;
-
+        skillController = GetComponent<EnemySkillController>();
+        skillSet = GetComponent<EnemySkillSet>();
         if (navMeshAgent != null)
         {
             navMeshAgent.avoidancePriority = Random.Range(20, 80);
@@ -72,53 +76,58 @@ public class EnemyPatrol : MonoBehaviour, ICombatTarget
 
         if (useWaypoints)
         {
-            if (waypoints == null || waypoints.Length == 0)
-                waypoints = GetComponentsInChildren<WaypointMarker>();
+            //if (waypoints == null || waypoints.Length == 0)
+            //    waypoints = GetComponentsInChildren<WaypointMarker>();
 
             if (waypoints == null || waypoints.Length == 0)
                 Debug.LogWarning($"[{nameof(EnemyPatrol)}] 找不到任何 WaypointMarker：{name}", gameObject);
         }
 
-        if (characterIdentifier != null && characterIdentifier.data != null)
-        {
-            _hp = characterIdentifier.data.initialHp;
-            _maxHp = characterIdentifier.data.initialMaxHp;
-        }
-        else if (enemyComponent != null)
-        {
-            _hp = enemyComponent.hp;
-            _maxHp = enemyComponent.maxHp;
-        }
+        //if (characterIdentifier != null && characterIdentifier.data != null)
+        //{
+        //    _hp = characterIdentifier.data.initialHp;
+        //    _maxHp = characterIdentifier.data.initialMaxHp;
+        //}
+        //else if (enemyComponent != null)
+        //{
+            //_hp = enemyComponent.hp;
+            //_maxHp = enemyComponent.maxHp;
+        //}
 
-        if (floatingBar != null && !floatingBar.initialized)
-        {
-            floatingBar.SetInitialHp(_hp, _maxHp);
-            if (characterIdentifier != null && characterIdentifier.data != null)
-                floatingBar.SetInitialName(characterIdentifier.data.displayName);
-            if (UIData.Instance != null)
-                floatingBar.Init(floatingBar.go_bar);
-        }
+        //if (floatingBar != null && !floatingBar.initialized)
+        //{
+        //    floatingBar.SetInitialHp(_hp, _maxHp);
+        //    if (characterIdentifier != null && characterIdentifier.data != null)
+        //        floatingBar.SetInitialName(characterIdentifier.data.displayName);
+        //    if (UIData.Instance != null)
+        //        floatingBar.Init(floatingBar.go_bar);
+        //}
 
-        if (_maxHp <= 0) _maxHp = 100;
-        if (_hp <= 0) _hp = _maxHp;
+        //if (_maxHp <= 0) _maxHp = 100;
+        //if (_hp <= 0) _hp = _maxHp;
 
         FindPlayer();
     }
 
+    private void FixedUpdate()
+    {
+        if (_isDead) return;
+        distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
+        playerDetected = CanSeePlayer();
+    }
     private void Update()
     {
         if (_isDead) return;
+        //if (playerTransform == null)
+        //    FindPlayer();
 
-        if (playerTransform == null)
-            FindPlayer();
+        //if (playerTransform == null) return;
 
-        if (playerTransform == null) return;
-
-        playerDetected = CanSeePlayer();
+        //playerDetected = CanSeePlayer();
 
         if (playerDetected)
         {
-            float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
+            //float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
             if (distanceToPlayer <= attackRange)
                 TryAttack();
             else
@@ -139,30 +148,32 @@ public class EnemyPatrol : MonoBehaviour, ICombatTarget
     {
         // 方法1: 透過 PlayerManager
         PlayerManager pm = PlayerManager.Instance;
-        if (pm != null && pm.go_Player != null)
-        {
-            playerTransform = pm.go_Player.transform;
-        }
-        else
-        {
-            // 方法2: 透過 Tag
-            GameObject player = GameObject.FindWithTag("Player");
-            if (player != null)
-                playerTransform = player.transform;
-        }
+        //if (pm != null && pm.go_Player != null)
+        //{
+        playerTransform = pm.go_Player.transform;
+        //}
+        //else
+        //{
+        //    // 方法2: 透過 Tag
+        //    GameObject player = GameObject.FindWithTag("Player");
+        //    if (player != null)
+        //        playerTransform = player.transform;
+        //}
 
-        if (playerTransform == null) return;
+        //if (playerTransform == null) return;
 
-        // 在玩家的整個階層中搜尋 ICombatTarget
-        // 先查自身，再查子物件，再查 root 往下
+        //// 在玩家的整個階層中搜尋 ICombatTarget
+        //// 先查自身，再查子物件，再查 root 往下
+        ///
+        //playerTarget = playerTransform.GetComponent<ICombatTarget>();
         playerTarget = playerTransform.GetComponent<ICombatTarget>();
-        if (playerTarget == null)
-            playerTarget = playerTransform.GetComponentInChildren<ICombatTarget>();
-        if (playerTarget == null)
-            playerTarget = playerTransform.root.GetComponentInChildren<ICombatTarget>();
+        //if (playerTarget == null)
+        //    playerTarget = playerTransform.GetComponentInChildren<ICombatTarget>();
+        //if (playerTarget == null)
+        //    playerTarget = playerTransform.root.GetComponentInChildren<ICombatTarget>();
 
-        if (playerTarget == null)
-            Debug.LogWarning($"[{name}] 找不到玩家的 ICombatTarget，敵人無法造成傷害！", gameObject);
+        //if (playerTarget == null)
+        //    Debug.LogWarning($"[{name}] 找不到玩家的 ICombatTarget，敵人無法造成傷害！", gameObject);
     }
 
     // ===================== 偵測 =====================
@@ -171,7 +182,7 @@ public class EnemyPatrol : MonoBehaviour, ICombatTarget
     {
         if (playerTransform == null) return false;
 
-        float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
+        //float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
         if (distanceToPlayer > detectionRange) return false;
 
         Vector3 directionToPlayer = (playerTransform.position - transform.position).normalized;
@@ -208,7 +219,7 @@ public class EnemyPatrol : MonoBehaviour, ICombatTarget
                 waitAtWaypointTime = Time.time + currentWaypoint.waitTime;
                 if (navMeshAgent != null && navMeshAgent.enabled && navMeshAgent.isActiveAndEnabled)
                     navMeshAgent.isStopped = true;
-            }
+            } 
 
             if (Time.time >= waitAtWaypointTime)
             {
@@ -227,24 +238,29 @@ public class EnemyPatrol : MonoBehaviour, ICombatTarget
 
     private void Idle()
     {
-        if (CanUseNavMeshAgent())
+        if(navMeshAgent.hasPath)
         {
-            navMeshAgent.isStopped = true;
-            navMeshAgent.SetDestination(transform.position);
+            navMeshAgent.ResetPath();
         }
+        //if (CanUseNavMeshAgent())
+        //{
+        //    navMeshAgent.isStopped = true;
+        //    navMeshAgent.SetDestination(transform.position);
+        //}
     }
 
     // ===================== 移動 =====================
 
     private void MoveToPosition(Vector3 targetPosition, float speed)
     {
-        Vector3 directionToTarget = targetPosition - transform.position;
-        if (directionToTarget.sqrMagnitude > 0.0001f)
-        {
-            Vector3 normalizedDirection = directionToTarget.normalized;
-            Vector3 newDirection = Vector3.RotateTowards(transform.forward, normalizedDirection, Time.deltaTime * 2f, 0.0f);
-            transform.rotation = Quaternion.LookRotation(newDirection);
-        }
+        //Vector3 directionToTarget = targetPosition - transform.position;
+        //if (directionToTarget.sqrMagnitude > 0.0001f)
+        //{
+        //    Vector3 normalizedDirection = directionToTarget.normalized;
+        //    Vector3 newDirection = Vector3.RotateTowards(transform.forward, normalizedDirection, Time.deltaTime * 2f, 0.0f);
+        //    transform.rotation = Quaternion.LookRotation(newDirection);
+        //    transform.position += normalizedDirection * speed * Time.deltaTime;
+        //}
 
         bool canUseAgent = CanUseNavMeshAgent() || TrySnapAgentToNavMesh();
         if (canUseAgent)
@@ -255,13 +271,18 @@ public class EnemyPatrol : MonoBehaviour, ICombatTarget
                 return;
 
             WarnMoveIssue($"NavMeshAgent.SetDestination 失敗，改用手動位移：{name}");
+        } else
+        {
+            Vector3 directionToTarget = targetPosition - transform.position;
+            Vector3 normalizedDirection = directionToTarget.normalized;
+                transform.position += normalizedDirection * speed * Time.deltaTime;
         }
 
-        if (directionToTarget.sqrMagnitude > 0.0001f)
-        {
-            Vector3 normalizedDirection = directionToTarget.normalized;
-            transform.position += normalizedDirection * speed * Time.deltaTime;
-        }
+        //if (directionToTarget.sqrMagnitude > 0.0001f)
+        //{
+        //    Vector3 normalizedDirection = directionToTarget.normalized;
+        //    transform.position += normalizedDirection * speed * Time.deltaTime;
+        //}
     }
 
     private bool CanUseNavMeshAgent()
@@ -332,23 +353,24 @@ public class EnemyPatrol : MonoBehaviour, ICombatTarget
 
     private void AttackPlayer()
     {
-        // 沒有 playerTarget 也要嘗試再找一次
-        if (playerTarget == null)
-        {
-            FindPlayer();
-            if (playerTarget == null)
-            {
-                Debug.LogWarning($"[{name}] 找不到玩家 ICombatTarget，無法攻擊", gameObject);
-                return;
-            }
-        }
+        //// 沒有 playerTarget 也要嘗試再找一次
+        //if (playerTarget == null)
+        //{
+        //    FindPlayer();
+        //    if (playerTarget == null)
+        //    {
+        //        Debug.LogWarning($"[{name}] 找不到玩家 ICombatTarget，無法攻擊", gameObject);
+        //        return;
+        //    }
+        //}
 
         lastAttackTime = Time.time;
-        if (attackCoroutine != null)
-            StopCoroutine(attackCoroutine);
+        skillController.TryCast(skillSet.light_attack);
+        //if (attackCoroutine != null)
+        //    StopCoroutine(attackCoroutine);
 
-        attackCoroutine = PerformAttack();
-        StartCoroutine(attackCoroutine);
+        //attackCoroutine = PerformAttack();
+        //StartCoroutine(attackCoroutine);
     }
 
     private IEnumerator PerformAttack()
@@ -366,7 +388,7 @@ public class EnemyPatrol : MonoBehaviour, ICombatTarget
         // 3. 前搖結束，判定是否命中並扣血
         if (playerTarget != null && playerTransform != null && !playerTarget.IsDead())
         {
-            float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
+            //float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
             if (distanceToPlayer <= attackRange + 0.25f)
             {
                 playerTarget.TakeDamage(attackDamage, transform);
@@ -426,11 +448,14 @@ public class EnemyPatrol : MonoBehaviour, ICombatTarget
             ? DamageSystem.Instance.CalculateDamage(damage, defense)
             : damage;
 
-        _hp -= (int)actualDamage;
-        Debug.Log($"{characterIdentifier?.data?.displayName} 受到傷害: {actualDamage}hp，剩餘血量: {_hp}/{_maxHp}", gameObject);
+        //_hp -= (int)actualDamage;
+        Enemy test = GetComponent<Enemy>();
+        test.hp = test.hp - (int)actualDamage;
+        //Debug.Log($"{characterIdentifier?.data?.displayName} 受到傷害: {actualDamage}hp，剩餘血量: {_hp}/{_maxHp}", gameObject);
+        Debug.Log($"{characterIdentifier?.data?.displayName} 受到傷害: {actualDamage}hp，剩餘血量: {enemyComponent.hp}/{enemyComponent.maxHp}", gameObject);
 
-        if (floatingBar != null && floatingBar.initialized)
-            floatingBar.UpdateHealthBar(_hp, _maxHp);
+        //if (floatingBar != null && floatingBar.initialized)
+        //    floatingBar.UpdateHealthBar(_hp, _maxHp);
 
         // 被打到時立即偵測到玩家（仇恨）
         if (!playerDetected && attacker != null)
@@ -438,7 +463,7 @@ public class EnemyPatrol : MonoBehaviour, ICombatTarget
             playerDetected = true;
         }
 
-        if (_hp <= 0)
+        if (enemyComponent.hp <= 0)
             Die();
     }
 
@@ -451,16 +476,16 @@ public class EnemyPatrol : MonoBehaviour, ICombatTarget
         if (navMeshAgent != null)
             navMeshAgent.enabled = false;
 
-        if (floatingBar != null)
-            floatingBar.DisableBar();
+        //if (floatingBar != null)
+        //    floatingBar.DisableBar();
 
-        Destroy(gameObject, 2f);
+        //Destroy(gameObject, 2f);
     }
 
     // ===================== ICombatTarget =====================
 
-    public int GetCurrentHP() => _hp;
-    public int GetMaxHP() => _maxHp;
+    public int GetCurrentHP() => enemyComponent.hp;
+    public int GetMaxHP() => enemyComponent.maxHp;
     public bool IsDead() => _isDead;
     public Vector3 GetPosition() => transform.position;
     public Transform GetTransform() => transform;

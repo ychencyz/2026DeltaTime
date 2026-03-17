@@ -16,6 +16,20 @@ public class UIFloatingBarElement : MonoBehaviour
     private int _maxHp;
     //[SerializeField]
     private string _displayNname;
+    private void OnEnable()
+    {
+        if(initialized)
+        {
+            EnableBar();
+        }
+    }
+    private void OnDisable()
+    {
+        if (initialized)
+        {
+            DisableBar();
+        }
+    }
     public void EnableBar()
     {
         go_bar.SetActive(true);

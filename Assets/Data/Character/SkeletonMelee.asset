@@ -15,6 +15,6 @@ MonoBehaviour:
   id: 1
   type: 0
   displayName: Skeleton
-  initialHp: 300
-  initialMaxHp: 300
+  initialHp: 3000
+  initialMaxHp: 3000
   radius: 2
