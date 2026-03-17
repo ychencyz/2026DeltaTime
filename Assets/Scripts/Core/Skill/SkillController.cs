@@ -1,4 +1,4 @@
-// --- Unity ¹ê¾Ô¬[ºc½d¨Ò ---
+// --- Unity ï¿½ï¿½Ô¬[ï¿½cï¿½dï¿½ï¿½ ---
 
 using System.Collections;
 using UnityEngine;
@@ -11,18 +11,22 @@ public class SkillController : MonoBehaviour
     private Combat combat;
     private SkillSet skillSet;
     private SkillData data;
+    private Animator animator;
 
     private void Start()
     {
         skillSet = GetComponent<SkillSet>();
         combat = GetComponent<Combat>();
+        animator = GetComponent<Animator>();
     }
-    // ¥~³¡¶i¤JÂI
+    // ï¿½~ï¿½ï¿½ï¿½iï¿½Jï¿½I
     public void TryCast(SkillData _data, Vector3 position)
     {
-        // ª¬ºAµô§P Gate: ÀË¬d¨¤¦âStatus
+        // æˆ°é¬¥å§¿æ…‹ Gate: æœªæ‹”åŠä¸èƒ½æ–½æ”¾æŠ€èƒ½
+        if (animator != null && !animator.GetBool("inCombat")) return;
+        // ç‹€æ…‹åˆ¤å®š Gate: æª¢æŸ¥æšˆçœ©Status
         if (GetComponent<StatusSystem>().isStunned) return;
-        // ª¬ºAµô§P Gate: ÀË¬d«e¤@­Óskill¬O§_¯à¬Iªk
+        // ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½P Gate: ï¿½Ë¬dï¿½eï¿½@ï¿½ï¿½skillï¿½Oï¿½_ï¿½ï¿½Iï¿½k
         if (data != null)
         {
             bool prevSkillOk = (data.state == SkillState.Idle || data.state == SkillState.Cooldown);
@@ -30,7 +34,7 @@ public class SkillController : MonoBehaviour
             //Debug.Log("prevSkillOk:" + prevSkillOk);
             if (!prevSkillOk) return;
         }
-        // ª¬ºAµô§P Gate: ÀË¬d«ö¤Uªºskill¬O§_¯à¬Iªk
+        // ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½P Gate: ï¿½Ë¬dï¿½ï¿½ï¿½Uï¿½ï¿½skillï¿½Oï¿½_ï¿½ï¿½Iï¿½k
         //Debug.Log("new _data.state:" + _data.state);
         if (_data.state != SkillState.Idle) return;
         data = _data;
@@ -39,21 +43,21 @@ public class SkillController : MonoBehaviour
     }
     private IEnumerator SkillLifecycle(SkillData data)
     {
-        // [Anticipation] «e·n
+        // [Anticipation] ï¿½eï¿½n
         data.state = SkillState.Anticipation;
         PlayerDelegates.Instance.OnSkillStart?.Invoke(skillSet, data);
         yield return new WaitForSeconds(data.anticipationTime);
 
-        // [Execution] °õ¦æ®Ö¤ßÅŞ¿è
+        // [Execution] ï¿½ï¿½ï¿½ï¿½Ö¤ï¿½ï¿½Ş¿ï¿½
         data.state = SkillState.Execution;
         ExecuteSkill();
 
-        // [Recovery] «á·n
+        // [Recovery] ï¿½ï¿½n
         PlayerDelegates.Instance.OnSkillCooldownStarted?.Invoke(skillSet, data);
         data.state = SkillState.Recovery;
         yield return new WaitForSeconds(data.recoveryTime);
 
-        // [Cooldown] §N«o±Ò°Ê
+        // [Cooldown] ï¿½Nï¿½oï¿½Ò°ï¿½
         data.state = SkillState.Cooldown;
         StartCoroutine(CooldownRoutine(data));
     }
@@ -69,7 +73,7 @@ public class SkillController : MonoBehaviour
             PlayerDelegates.Instance.OnSkillInterrupted?.Invoke(skillSet, data);
             StopCoroutine(data.skillRoutine);
             data.state = SkillState.Idle;
-            // ²M²z¤w¥Í¦¨ªº¯S®Ä...
+            // ï¿½Mï¿½zï¿½wï¿½Í¦ï¿½ï¿½ï¿½ï¿½Sï¿½ï¿½...
         }
     }
     private void ExecuteSkill()

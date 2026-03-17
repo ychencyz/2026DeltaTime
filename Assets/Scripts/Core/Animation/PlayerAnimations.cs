@@ -1,7 +1,5 @@
-using RPGCharacterAnims.Lookups;
 using System;
 using System.Collections;
-using System.Drawing;
 using UnityEngine;
 
 public class PlayerAnimations : MonoBehaviour
@@ -24,7 +22,7 @@ public class PlayerAnimations : MonoBehaviour
     }
     private void OnDisable()
     {
-        PlayerDelegates.Instance.OnSkillStart += SkillAnimation;
+        PlayerDelegates.Instance.OnSkillStart -= SkillAnimation;
         PlayerDelegates.Instance.OnSkillInterrupted -= InterruptAnimation;
     }
     private Coroutine actionAnimationRoutine;

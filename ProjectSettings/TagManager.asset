@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 3
   tags:
   - deOCC Ignore
+  - WanderPoint
+  - Enemy
+  - waypoint
   layers:
   - Default
   - TransparentFX
@@ -19,9 +22,9 @@ TagManager:
   - Thin Obstacle
   - SmallTrans Obstacle
   - Big Obstacle
-  - 
-  - 
-  - 
+  - Obstacle
+  - Enemy
+  - waypoint
   - 
   - 
   - 

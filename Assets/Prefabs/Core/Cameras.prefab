@@ -49,7 +49,6 @@ GameObject:
   - component: {fileID: 5390519937974984568}
   - component: {fileID: 3101833245562391120}
   - component: {fileID: 3388718118227111083}
-  - component: {fileID: 6071908394532301969}
   m_Layer: 0
   m_Name: FreeLook Camera
   m_TagString: Untagged
@@ -65,8 +64,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2880751635886840264}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0986859, y: 0.00000009764574, z: -0.000000009683526, w: 0.9951186}
-  m_LocalPosition: {x: 0.0012779236, y: 2.1314087, z: -5.1521454}
+  m_LocalRotation: {x: 0.061578024, y: 8.400618e-11, z: -5.18277e-12, w: 0.9981023}
+  m_LocalPosition: {x: 0.012601852, y: 1.2025146, z: -3.9399261}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -127,26 +126,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b5d7c088409d9a40b7b09aa707777f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetOffset: {x: 0, y: -0.3, z: 0}
+  TargetOffset: {x: 0, y: 0, z: 0}
   TrackerSettings:
     BindingMode: 4
     PositionDamping: {x: 1, y: 1, z: 1}
     AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
-  OrbitStyle: 0
+  OrbitStyle: 1
   Radius: 5.8
   Orbits:
     Top:
       Radius: 2
-      Height: 1.91
+      Height: 3
     Center:
       Radius: 4
-      Height: 0.9
+      Height: 1.5
     Bottom:
-      Radius: 3
-      Height: 0.07
-    SplineCurvature: 0.5
+      Radius: 2.5
+      Height: 0
+    SplineCurvature: 1
   RecenteringTarget: 2
   HorizontalAxis:
     Value: 0
@@ -159,8 +158,8 @@ MonoBehaviour:
       Time: 2
     Restrictions: 0
   VerticalAxis:
-    Value: 17.5
-    Center: 17.5
+    Value: -35
+    Center: -35
     Range: {x: -60, y: 60}
     Wrap: 0
     Recentering:
@@ -169,9 +168,9 @@ MonoBehaviour:
       Time: 2
     Restrictions: 0
   RadialAxis:
-    Value: 1
-    Center: 1
-    Range: {x: 0.22, y: 1.2}
+    Value: 1.2
+    Center: 1.2
+    Range: {x: 0.22, y: 1.5}
     Wrap: 0
     Recentering:
       Enabled: 0
@@ -191,17 +190,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Composition:
-    ScreenPosition: {x: 0, y: 0.05}
+    ScreenPosition: {x: 0, y: 0}
     DeadZone:
       Enabled: 0
       Size: {x: 0.2, y: 0.2}
     HardLimits:
       Enabled: 0
       Size: {x: 0.8, y: 0.8}
-      Offset: {x: 0, y: 0}
+      Offset: {x: 0, y: -0.1}
   CenterOnActivate: 0
   TargetOffset: {x: 0, y: 0, z: 0}
-  Damping: {x: 0.5, y: 0.5}
+  Damping: {x: 0, y: 0}
   Lookahead:
     Enabled: 0
     Time: 0
@@ -214,7 +213,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2880751635886840264}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a076c17fe76165e4f8ed21498b877bf9, type: 3}
   m_Name: 
@@ -299,11 +298,11 @@ MonoBehaviour:
     Enabled: 1
     ObstacleLayers:
       serializedVersion: 2
-      m_Bits: 1
+      m_Bits: 129
     UseFollowTarget:
       Enabled: 0
       YOffset: 0
-    Damping: 0
+    Damping: 3
     SmoothingTime: 0
   TerrainResolution:
     Enabled: 1
@@ -319,19 +318,19 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2880751635886840264}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dbe43d662878a7c43bcd44d43c9e2094, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   CollideAgainst:
     serializedVersion: 2
-    m_Bits: 1
-  IgnoreTag: deOCC Ignore
+    m_Bits: 641
+  IgnoreTag: 
   TransparentLayers:
     serializedVersion: 2
     m_Bits: 0
-  MinimumDistanceFromTarget: 5
+  MinimumDistanceFromTarget: 0.5
   AvoidObstacles:
     Enabled: 1
     DistanceLimit: 0
@@ -339,35 +338,18 @@ MonoBehaviour:
     CameraRadius: 0.1
     UseFollowTarget:
       Enabled: 0
-      YOffset: 0
+      YOffset: 9
     Strategy: 0
     MaximumEffort: 4
-    SmoothingTime: 1
-    Damping: 1
-    DampingWhenOccluded: 1
+    SmoothingTime: 0
+    Damping: 0.5
+    DampingWhenOccluded: 0.5
   ShotQualityEvaluation:
     Enabled: 0
-    OptimalDistance: 10
-    NearLimit: 5
-    FarLimit: 30
-    MaxQualityBoost: 0.2
---- !u!114 &6071908394532301969
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2880751635886840264}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 411fc66eca53b4c1487d67c3ac6079a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  obstacleLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  cameraRadius: 0.5
-  damping: 0.5
+    OptimalDistance: 5.8
+    NearLimit: 1
+    FarLimit: 12
+    MaxQualityBoost: 0.5
 --- !u!1001 &2519501628490551200
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -398,31 +380,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8999254298664650035, guid: c7f4b09b7752a7d40921bba633f99f24, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.0012779236
+      value: 0.012601852
       objectReference: {fileID: 0}
     - target: {fileID: 8999254298664650035, guid: c7f4b09b7752a7d40921bba633f99f24, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.1314087
+      value: 1.2025146
       objectReference: {fileID: 0}
     - target: {fileID: 8999254298664650035, guid: c7f4b09b7752a7d40921bba633f99f24, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.1521454
+      value: -3.9399261
       objectReference: {fileID: 0}
     - target: {fileID: 8999254298664650035, guid: c7f4b09b7752a7d40921bba633f99f24, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9951186
+      value: 0.9981023
       objectReference: {fileID: 0}
     - target: {fileID: 8999254298664650035, guid: c7f4b09b7752a7d40921bba633f99f24, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.0986859
+      value: 0.061578024
       objectReference: {fileID: 0}
     - target: {fileID: 8999254298664650035, guid: c7f4b09b7752a7d40921bba633f99f24, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.00000009764574
+      value: 8.400616e-11
       objectReference: {fileID: 0}
     - target: {fileID: 8999254298664650035, guid: c7f4b09b7752a7d40921bba633f99f24, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.000000009683525
+      value: -5.1827696e-12
       objectReference: {fileID: 0}
     - target: {fileID: 8999254298664650035, guid: c7f4b09b7752a7d40921bba633f99f24, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
