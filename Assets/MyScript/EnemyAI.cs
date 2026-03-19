@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
@@ -11,29 +12,38 @@ public class EnemyAI : MonoBehaviour
         Chase,
         Combat,
         Die,
-        //Reset
     }
     public AIState nowState = AIState.Idle;
+    private AIState prevState;
     public Transform[] waypoints;
     private int currentWaypointsIndex = -1; //選到第幾個waypoint
     private NavMeshAgent agent;
     //public Transform playerTransform;
     public float moveSpeed = 2f;
     public float runSpeed = 5f;
-    public float waitTimeMove = 2f;
-    public float attackRange = 2f;
-    public Vector3 spawnLoction; //出生點
-    public float detectionRadius = 10f;
-    public float distance;
-    public float stopPursueDistance = 15f; //超過出生點到不追逐的距離
-    private GameObject playerObject;
+    //public float waitTimeMove = 2f;
+    public float attackRange;
+    public float detectionRadius;
+    [Header("離player的distance")]
+    [SerializeField] private float distance;
+    //public float stopPursueDistance = 15f; //超過出生點到不追逐的距離
     private Enemy enemy;
+    private GameObject playerObject;
     private Transform playerTransform;
+    private Vector3 spawnLoction; //出生點
+    private CharacterIdentifier characterIdentifier;
     //private float viewAngle = 360f;
 
     [Header("群體站位")]
     [SerializeField] private float surroundRadiusMultiplier = 0.9f;
     private float _surroundAngleOffset;
+
+    [Header("skillController")]
+    private EnemySkillController skillController;
+    private EnemySkillSet skillSet;
+
+    //冷卻時間
+    private float nextFireTime;  //下次能發動的時間
 
     void Start()
     {
@@ -42,16 +52,26 @@ public class EnemyAI : MonoBehaviour
         playerObject = GameManager.Instance.Go_Player; //找到玩家
         playerTransform = playerObject.transform;
         spawnLoction = transform.position;
-        _surroundAngleOffset = Mathf.Abs(GetInstanceID()) % 360f;
+        _surroundAngleOffset = Mathf.Abs(GetInstanceID()) % 360f; //防止所有敵人都擠在同一個點上
         enemy = GetComponent<Enemy>();
+        skillController = GetComponent<EnemySkillController>();
+        skillSet = GetComponent<EnemySkillSet>();
+        characterIdentifier = GetComponent<CharacterIdentifier>();
+        attackRange = characterIdentifier.data.attackRange;
+        detectionRadius = characterIdentifier.data.detectionRadius;
     }
 
     private void FixedUpdate()
     {
         distance = Vector3.Distance(transform.position, playerTransform.position); //目前距離
+
+        Vector3 targetVector = playerTransform.position - transform.position;
+        transform.forward = Vector3.RotateTowards(transform.forward, targetVector, 0.05f, 0.05f);
+
         switch (nowState)
         {
             case AIState.Idle:
+                //if (prevState == AIState.Idle) return;
                 Debug.Log("玩家離太遠了，切換回待機模式");
 
                 string name = gameObject.name;
@@ -63,55 +83,71 @@ public class EnemyAI : MonoBehaviour
                 {
                     nowState = AIState.Patrol;
                 }
-
+                else
+                {
+                    prevState = AIState.Idle;
+                }
                 break;
 
             case AIState.Patrol:
+                //if (prevState == AIState.Patrol) return;
                 Debug.Log("巡邏中");
                 if (distance < detectionRadius)
                 {
                     nowState = AIState.Chase;
                 }
+                else
+                {
+                    prevState = AIState.Patrol;
+                }
                 break;
 
             case AIState.Chase:
-                Debug.Log("看到玩家，切換成追逐模式");
-                if (ExceedPursueDistance())
+                //if (prevState == AIState.Chase) return;
+                if (prevState != AIState.Chase)
                 {
-                    nowState = AIState.Idle;
+                    agent.ResetPath();
                 }
-                else if (distance < attackRange)
+                Debug.Log("看到玩家，切換成追逐模式");
+                //if (ExceedPursueDistance())
+                //{
+                //    nowState = AIState.Idle;
+                //} else
+                if (distance < attackRange)
                 {
                     nowState = AIState.Combat;
                 }
-
-
+                else
+                {
+                    prevState = AIState.Chase;
+                }
                 break;
 
             case AIState.Combat:
+                //if (prevState == AIState.Combat) return;
                 //Debug.Log("玩家在攻擊圈內，停下開始攻擊");
                 Debug.Log("Combat State");
                 if (distance <= attackRange)
                 {
                     agent.isStopped = true;
+                    prevState = AIState.Combat;
                 }
                 else
                 {
                     agent.isStopped = false;
-                    if (ExceedPursueDistance())
-                    {
-                        nowState = AIState.Idle;
-                    }
-                    else
-                    {
-                        nowState = AIState.Chase;
-                    }
+                    nowState = AIState.Chase;
+
+                    //if (ExceedPursueDistance())
+                    //{
+                    //    nowState = AIState.Idle;
+                    //}
+                    //else
+                    //{
+                    //    nowState = AIState.Chase;
+                    //}
                 }
                 break;
 
-                //case AIState.Reset:
-                //    IfExceedPursueDistanceToIdle();
-                //    break;
         }
 
     }
@@ -128,11 +164,12 @@ public class EnemyAI : MonoBehaviour
         }
         else if (nowState == AIState.Chase)
         {
+            Debug.Log(nowState + ": " + Time.time + ":move");
             MoveTowardPlayer();
         }
         else if (nowState == AIState.Combat)
         {
-
+            Combat();
         }
         else if (nowState == AIState.Die)
         {
@@ -155,26 +192,27 @@ public class EnemyAI : MonoBehaviour
 
     }
 
-    bool ExceedPursueDistance()
-    {
-        float playerDistanceSpawnLoction = Vector3.Distance(spawnLoction, playerTransform.position);
-        return playerDistanceSpawnLoction > stopPursueDistance;
-    }
+    //bool ExceedPursueDistance() //追逐限制距離
+    //{
+    //    float playerDistanceSpawnLoction = Vector3.Distance(spawnLoction, playerTransform.position);
+    //    return playerDistanceSpawnLoction > stopPursueDistance;
+    //}
     void MoveToPosition(Vector3 targetPosition, float speed)
     {
+        //Vector3 directionToTarget = targetPosition - transform.position;
+        //Vector3 normalizedDirection = directionToTarget.normalized;
+        //Vector3 newDirection = Vector3.RotateTowards(transform.forward, normalizedDirection, Time.deltaTime * 2f, 0.0f);
+        //transform.position += normalizedDirection * speed * Time.deltaTime;
+        //transform.rotation = Quaternion.LookRotation(newDirection);
         bool canUseAgent = CanUseNavMeshAgent() || TrySnapAgentToNavMesh();
+
         if (canUseAgent)
         {
             agent.speed = speed;
             agent.isStopped = false;
-            //Vector3 directionToTarget = targetPosition - transform.position;
-            //Vector3 normalizedDirection = directionToTarget.normalized;
-            //Vector3 newDirection = Vector3.RotateTowards(transform.forward, normalizedDirection, Time.deltaTime * 2f, 0.0f);
-            //transform.position += normalizedDirection * speed * Time.deltaTime;
-            //transform.rotation = Quaternion.LookRotation(newDirection);
             if (agent.SetDestination(targetPosition))
                 return;
-            WarnMoveIssue($"NavMeshAgent.SetDestination 失敗，改用手動位移：{name}");
+            //WarnMoveIssue($"NavMeshAgent.SetDestination 失敗：{name}");
         }
     }
     private bool CanUseNavMeshAgent()
@@ -215,9 +253,10 @@ public class EnemyAI : MonoBehaviour
     {
         if (playerTransform == null || enemy.IsDead()) return;
 
-        Vector3 targetPosition = GetSurroundSlotPosition();
+        //Vector3 targetPosition = GetSurroundSlotPosition();
 
-        MoveToPosition(targetPosition, runSpeed);
+        //MoveToPosition(targetPosition, runSpeed);
+        MoveToPosition(playerTransform.position, runSpeed);
     }
     private Vector3 GetSurroundSlotPosition()
     {
@@ -243,6 +282,25 @@ public class EnemyAI : MonoBehaviour
         //}
     }
 
+    private void Combat()
+    {
+        switch (characterIdentifier.data.id)
+        {
+            case 1:
+                EnemyAttacks.EnemyOne(skillController, skillSet, distance, nowState, nextFireTime);
+                break;
+
+            case 2:
+                EnemyAttacks.EnemyTwo(skillController, skillSet, distance, nowState, nextFireTime);
+                break;
+
+            default:
+                throw new Exception("[characterIdentifier.data.id] not found");
+        }
+
+    }
+
+
     // ===================== Gizmos =====================
 
     private void OnDrawGizmos()
@@ -251,8 +309,8 @@ public class EnemyAI : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, detectionRadius);
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
-        Gizmos.color = Color.black;
-        Gizmos.DrawWireSphere(spawnLoction, stopPursueDistance);
+        //Gizmos.color = Color.black;
+        //Gizmos.DrawWireSphere(spawnLoction, stopPursueDistance);
         //Gizmos.color = Color.green;
         //Vector3 leftDirection = Quaternion.Euler(0, -viewAngle / 2f, 0) * transform.forward * detectionRadius;
         //Vector3 rightDirection = Quaternion.Euler(0, viewAngle / 2f, 0) * transform.forward * detectionRadius;
