@@ -11,7 +11,11 @@ public class PlayerDelegates : MonoBehaviour
     //public Action OnBlockStart;
     //public Action OnBlockCancel;
     public Action<SkillSet, SkillData> OnSkillStart;
+    public Action<SkillSet, SkillData> OnSkillExecute;
     public Action<SkillSet, SkillData> OnSkillInterrupted;
+    public Action OnBash;
+    public Action<String> OnRollDodgeStart;
+    public Action OnRollDodgeEnd;
     //public Action OnBreakFree;
     //UI related
     public Action<SkillSet> OnPlayerSkillsLoaded;

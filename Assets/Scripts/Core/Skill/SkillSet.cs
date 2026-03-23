@@ -38,6 +38,8 @@ public class SkillSet : MonoBehaviour
     public SkillData skill_5;
     //[HideInInspector]
     public SkillData skill_ult;
+    [HideInInspector]
+    public SkillData gcd;
 
     public int light_attack_id
     {
@@ -122,6 +124,7 @@ public class SkillSet : MonoBehaviour
     {
         PlayerDelegates.Instance.OnPlayerSkillsLoaded?.Invoke(this);
         setAllSkils();
+        gcd = AssetDataManager.Instance.GetPlayerSkillById(0);
     }
     void setAllSkils()
     {

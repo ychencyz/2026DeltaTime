@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
@@ -90,6 +92,9 @@ namespace StarterAssets
         private float _animationBlendVelocityZ;
         public Transform headBone;
         public Quaternion headBoneOffset = Quaternion.Euler(0, 115, 288);
+        public float rollDuration = 1.5f;
+        public float rollSpeed = 1.5f;
+        private StatusSystem statusSystem;
         // 新變數[new Vars end]
 
         // timeout deltatime
@@ -130,7 +135,14 @@ namespace StarterAssets
                 _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             }
         }
-
+        private void OnEnable()
+        {
+            PlayerDelegates.Instance.OnRollDodgeStart += OnRollDodgeStart;
+        }
+        private void OnDisable()
+        {
+            PlayerDelegates.Instance.OnRollDodgeStart -= OnRollDodgeStart;
+        }
         private void Start()
         {
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
@@ -139,7 +151,7 @@ namespace StarterAssets
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<m_StarterAssetsInputs>();
             _playerInput = GetComponent<PlayerInput>();
-
+            statusSystem = GetComponent<StatusSystem>();
             AssignAnimationIDs();
 
             // reset our timeouts on start
@@ -210,6 +222,29 @@ namespace StarterAssets
             _animator.SetFloat("Velocity X", _animationBlendVelocityX);
             _animator.SetFloat("Velocity Z", _animationBlendVelocityZ);
             //Debug.Log(_input.move.x + "," + _input.move.y + ">>> " + _animationBlendVelocityX + "," + _animationBlendVelocityZ);
+        }
+        void OnRollDodgeStart(string actionName)
+        {
+            Vector3 rollDirection = actionName switch
+            {
+                "DodgeFoward" => transform.forward,
+                "DodgeRight" => transform.right,
+                "DodgeBackward" => -transform.forward,
+                "DodgeLeft" => -transform.right,
+                _ => throw new ArgumentException("RollDodge wrongfully called，input action name: " + actionName)
+            };
+            StartCoroutine(PerformRoll(rollDirection));
+        }
+        IEnumerator PerformRoll(Vector3 rollDirection)
+        {
+            statusSystem.isRolling = true;
+            float startTime = Time.time;
+            while (Time.time < startTime + rollDuration)
+            {
+                _controller.Move(rollDirection * rollSpeed * Time.deltaTime);
+                yield return null;
+            }
+            statusSystem.isRolling = false;
         }
         //新增 [new functions end]
         private void AssignAnimationIDs()
@@ -420,7 +455,7 @@ namespace StarterAssets
             {
                 if (FootstepAudioClips.Length > 0)
                 {
-                    var index = Random.Range(0, FootstepAudioClips.Length);
+                    var index = UnityEngine.Random.Range(0, FootstepAudioClips.Length);
                     AudioSource.PlayClipAtPoint(FootstepAudioClips[index], transform.TransformPoint(_controller.center), FootstepAudioVolume);
                 }
             }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public enum SkillTargetType
@@ -7,6 +8,14 @@ public enum SkillTargetType
     Target,
     TargetFollow,
 }
+
+[Serializable]
+public class AnimationGroup
+{
+    public int actionId;
+    public AnimationClip actionClip;
+}
+
 [CreateAssetMenu(fileName = "NewSkillData", menuName = "Skills/SkillData")]
 public class SkillData : AssetData
 {
@@ -14,13 +23,13 @@ public class SkillData : AssetData
     public Vector3 position = Vector3.zero;
     public Coroutine skillRoutine;
     public string displayName = "default Name";
-    public float anticipationTime = 0.15f; // «e·n
-    public float recoveryTime = 0f;     // «á·n
-    public float cooldownTime = 2.0f;     // §N«o
+    public float anticipationTime = 0.15f; // ï¿½eï¿½n
+    public float recoveryTime = 0f;     // ï¿½ï¿½n
+    public float cooldownTime = 2.0f;     // ï¿½Nï¿½o
     public float damage = 10f;
+    public int aniticipationActionId = -1;
     public SkillTargetType targetType;
-    public int actionId = -1;
-    public AnimationClip actionClip;
+    public AnimationGroup[] animationGroups;
     public GameObject VFXPrefab;
     public Sprite icon;
 }

@@ -58,7 +58,7 @@ public class Combat : MonoBehaviour
             }
         }
 
-        Debug.Log($"Skill [{data.displayName}] Executed! Hit {hits.Length} colliders.");
+        //Debug.Log($"Skill [{data.displayName}] Executed! Hit {hits.Length} colliders.");
     }
 
     /// 根據 SkillTargetType 決定技能釋放位置

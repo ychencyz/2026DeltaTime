@@ -89,6 +89,7 @@ MonoBehaviour:
   countDown: {fileID: 7653836135950756059}
   controlKey: {fileID: 1534470809401515203}
   displayName: {fileID: 0}
+  ImageForDrag: {fileID: 0}
   imageDiabledColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
 --- !u!222 &653256813782646114
 CanvasRenderer:
@@ -329,7 +330,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1979897024, guid: a10849c8f0c3ef54f9efaf9d1effa924, type: 3}
+  m_Sprite: {fileID: -1979897024, guid: 04f785218b343e3439369847dd85f47d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

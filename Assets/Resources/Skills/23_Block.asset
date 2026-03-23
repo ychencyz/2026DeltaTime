@@ -10,16 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 484ac7ae619563448a38778b151a0735, type: 3}
-  m_Name: 0_Skill_GCD
+  m_Name: 23_Block
   m_EditorClassIdentifier: 
-  id: 0
+  id: 23
   state: 0
   position: {x: 0, y: 0, z: 0}
-  displayName: GCD
+  displayName: Block
   anticipationTime: 0.15
   recoveryTime: 0
   cooldownTime: 1
   damage: 0
-  actionId: -1
-  projectilePrefab: {fileID: 0}
-  icon: {fileID: 0}
+  aniticipationActionId: -1
+  targetType: 1
+  animationGroups:
+  - actionId: 23
+    actionClip: {fileID: 7400000, guid: 27b17a386d15b2c4da017fc1c632062c, type: 3}
+  VFXPrefab: {fileID: 0}
+  icon: {fileID: -1979897024, guid: 04f785218b343e3439369847dd85f47d, type: 3}

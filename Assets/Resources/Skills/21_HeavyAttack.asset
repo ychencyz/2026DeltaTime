@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 484ac7ae619563448a38778b151a0735, type: 3}
-  m_Name: 1_TestSkill
+  m_Name: 21_HeavyAttack
   m_EditorClassIdentifier: 
-  id: 1
+  id: 21
   state: 0
   position: {x: 0, y: 0, z: 0}
-  displayName: Crystal
-  anticipationTime: 0.15
+  displayName: HeavyAttack
+  anticipationTime: 1
   recoveryTime: 0
-  cooldownTime: 2
-  damage: 100
-  targetType: 2
-  actionId: -1
-  actionClip: {fileID: 0}
-  currentSkillAction: 0
-  skillActionList: []
-  VFXPrefab: {fileID: 176822597162087251, guid: 46009f57772e5e743bec9df57a49ed66, type: 3}
-  icon: {fileID: -292873078, guid: 96c81ca06bf9e7f42b0b0a9e62d492c5, type: 3}
+  cooldownTime: 1
+  damage: 10
+  aniticipationActionId: 100
+  targetType: 1
+  animationGroups:
+  - actionId: 21
+    actionClip: {fileID: 7400000, guid: 8150f1e6c88c93a4ea62970e83878496, type: 2}
+  VFXPrefab: {fileID: 0}
+  icon: {fileID: -1979897024, guid: 04f785218b343e3439369847dd85f47d, type: 3}

@@ -10,18 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 484ac7ae619563448a38778b151a0735, type: 3}
-  m_Name: 5_TestSkill5
+  m_Name: 3_TestSkill3
   m_EditorClassIdentifier: 
-  id: 5
+  id: 2
   state: 0
   position: {x: 0, y: 0, z: 0}
-  displayName: HeavyAttack
+  displayName: Red Explosion
   anticipationTime: 0.15
   recoveryTime: 0
   cooldownTime: 2
-  damage: 10
+  damage: 100
   targetType: 2
-  actionId: -1
-  actionClip: {fileID: 0}
-  VFXPrefab: {fileID: 0}
-  icon: {fileID: -1979897024, guid: a10849c8f0c3ef54f9efaf9d1effa924, type: 3}
+  animationGroups: []
+  VFXPrefab: {fileID: 8378648546881499446, guid: 867c572a5be680d42a042d2349f10143, type: 3}
+  icon: {fileID: -981660072, guid: f334690c04fee2f4b9e3e531e8e5a7a3, type: 3}

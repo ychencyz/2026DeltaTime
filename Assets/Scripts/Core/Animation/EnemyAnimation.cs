@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 public class EnemyAnimation : MonoBehaviour
@@ -29,22 +30,57 @@ public class EnemyAnimation : MonoBehaviour
         enemyDelegates.OnSkillInterrupted -= InterruptAnimation;
     }
     private Coroutine actionAnimationRoutine;
+    private int prevSkillId = -1;
+    private int _clipIndex = -1;
+    private Coroutine resetActionRoutine;
+    private IEnumerator resetActionCountdownRoutine(float _countDownFrom)
+    {
+        float currentTime = _countDownFrom;
+        float interval = 0.1f;
+        while (currentTime > 0)
+        {
+            yield return new WaitForSeconds(interval);
+            currentTime -= interval;
+        }
+        // reset index
+        _clipIndex = -1;
+    }
     private void SkillAnimation(SkillData skillData)
     {
-        //if (animator.GetBool("inCombat") != true) return;
-        //TODO: 有裝態機後改掉:
-        if (animator.GetBool("inCombat") != true)
+        if(skillData.animationGroups.Length < 1) return;
+
+        // get index
+        _clipIndex = _clipIndex + 1;
+
+        // reset to 0 if (1. prev skill Id changed, )
+        if (prevSkillId != skillData.id)
         {
-            animator.SetBool("inCombat", true);
+            _clipIndex = 0;
+        }
+        prevSkillId = skillData.id;
+
+        // (3. exceed 1s)
+        if (resetActionRoutine != null)
+        {
+            StopCoroutine(resetActionRoutine);
+        }
+        resetActionRoutine = StartCoroutine(resetActionCountdownRoutine(2f));
+
+        // (2. index out of range)
+        if (_clipIndex > skillData.animationGroups.Length - 1 || _clipIndex < 0)
+        {
+            _clipIndex = 0;
         }
 
-        if (skillData.actionId > 0)
-        {
-            animator.SetInteger("Action", skillData.actionId);
-            AnimationClip actionClip = skillData.actionClip;
-            float clipLength = actionClip.length - 0.2f;
-            actionAnimationRoutine = StartCoroutine(CountdownRoutine(clipLength));
-        }
+        // get clip
+        int __clipIndex = _clipIndex == -1 ? 0 : _clipIndex;
+        int _actionId = skillData.animationGroups[__clipIndex].actionId;
+        // if id < 0 return
+        if (_actionId < 0) return;
+        animator.SetInteger("Action", _actionId);
+        AnimationClip actionClip = skillData.animationGroups[__clipIndex].actionClip;
+        float clipLength = actionClip.length - 0.2f;
+        actionAnimationRoutine = StartCoroutine(CountdownRoutine(clipLength));
     }
     private IEnumerator CountdownRoutine(float _countDownFrom)
     {
@@ -94,6 +130,10 @@ public class EnemyAnimation : MonoBehaviour
         //佔位防止報錯
     }
     public void Hit() //weapon hit frame
+    {
+        //佔位防止報錯
+    }
+    public void OnFootstep()
     {
         //佔位防止報錯
     }

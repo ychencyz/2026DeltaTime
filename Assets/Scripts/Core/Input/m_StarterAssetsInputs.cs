@@ -25,10 +25,10 @@ namespace StarterAssets
 
 		public void OnLook(InputAction.CallbackContext context)
 		{
-			if(cursorInputForLook)
-			{
-				LookInput(context.ReadValue<Vector2>());
-			}
+			//if(cursorInputForLook)
+			//{
+			//	LookInput(context.ReadValue<Vector2>());
+			//}
 		}
 
 		public void OnJump(InputAction.CallbackContext context)
@@ -62,15 +62,15 @@ namespace StarterAssets
 			sprint = newSprintState;
 		}
 
-		private void OnApplicationFocus(bool hasFocus)
-		{
-			SetCursorState(cursorLocked);
-		}
+		//private void OnApplicationFocus(bool hasFocus)
+		//{
+		//	SetCursorState(cursorLocked);
+		//}
 
-		private void SetCursorState(bool newState)
-		{
-			Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
-		}
+		//private void SetCursorState(bool newState)
+		//{
+		//	Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
+		//}
 	}
 	
 }

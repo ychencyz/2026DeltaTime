@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
@@ -11,6 +12,11 @@ public class PlayerInputs : MonoBehaviour
     private StatusSystem statusSystem;
     private PlayerInput playerInput;
     private PlayerAnimations playerAnimations;
+    SkillData heavyAttackSkillData;
+    SkillData lightAttackSkillData;
+    SkillData BashSkillData;
+    SkillData BlockSkillData;
+    int BlockSkillActionId;
     void Start()
     {
         skillSet = GetComponent<SkillSet>();
@@ -18,49 +24,124 @@ public class PlayerInputs : MonoBehaviour
         statusSystem = GetComponent<StatusSystem>();
         playerInput = GetComponent<PlayerInput>();
         playerAnimations = GetComponent<PlayerAnimations>();
+        heavyAttackSkillData = skillSet.GetSkillByActionName("HeavyAttack");
+        lightAttackSkillData = skillSet.GetSkillByActionName("LightAttack");
+        BashSkillData = AssetDataManager.Instance.GetPlayerSkillById(22);
+        BlockSkillData = AssetDataManager.Instance.GetPlayerSkillById(23);
+        BlockSkillActionId = BlockSkillData.animationGroups[0].actionId;
+        SwitchToPlayerMap();
     }
-
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        if (playerInput != null) SwitchToPlayerMap();
+    }
+    float nextHeavtCanAttackTime;
+    Coroutine StartHeavyCoroutine;
     public void InvokeAttack(InputAction.CallbackContext context)
     {
-        //if (context.started)
-        //{
-        //    //Debug.Log("Attack --- context.started!");
-        //    //    PlayerDelegates.Instance.OnAttackStart?.Invoke();
-        //}
+        if (context.started)
+        {
+            //Debug.Log(Time.time + ": Attack --- context.started!");
+            if (!skillController.prevSkillOk) return;
+            StartHeavyCoroutine = StartCoroutine(StartHeavyRoutine(0.15f));
+            //    PlayerDelegates.Instance.OnAttackStart?.Invoke();
+        }
         if (context.performed)
         {
-            //Debug.Log("Attack --- context.performed!");
+            if (!skillController.prevSkillOk) return;
+            //Debug.Log(Time.time + ": Attack --- context.performed!");
+            if (StartHeavyCoroutine != null) StopCoroutine(StartHeavyCoroutine);
             if (context.interaction is TapInteraction)
             {
                 //Debug.Log("LightAttack --- Tap performed!");
-                SkillData skillData = skillSet.GetSkillByActionName("LightAttack");
-                skillController.TryCast(skillData, Vector3.zero);
-            }
-            else if (context.interaction is HoldInteraction)
-            {
-                SkillData heavySkillData = skillSet.GetSkillByActionName("HeavyAttack");
-                if (heavySkillData != null)
-                {
-                    skillController.TryCast(heavySkillData, Vector3.zero);
-                }
+                skillController.Interrupt();
+                skillController.TryCast(lightAttackSkillData);
             }
         }
-        //////�`:canceled�|�btap��hold����call�@��
         //if (context.canceled)
         //{
-        //    Debug.Log("Attack --- context.canceled!");
-        //    //    PlayerDelegates.Instance.OnAttackCancel?.Invoke();
+        //    Debug.Log(Time.time + ": Attack --- context.canceled!");
         //}
+
+    }
+    private IEnumerator StartHeavyRoutine(float interval)
+    {
+        yield return new WaitForSeconds(interval);
+        nextHeavtCanAttackTime = Time.time + heavyAttackSkillData.anticipationTime;
+        skillController.TryCast(heavyAttackSkillData);
+    }
+    Coroutine ContinueHeavyCoroutine;
+    private IEnumerator ContinueHeavyRoutine(float interval)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(interval);
+            if (heavyAttackSkillData.state == SkillState.Idle && skillController.data.state == SkillState.Idle)
+            {
+                skillController.TryCast(heavyAttackSkillData);
+            }
+        }
+    }
+    public void InvokeHeavyAttack(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if (!skillController.prevSkillOk) return;
+            ContinueHeavyCoroutine = StartCoroutine(ContinueHeavyRoutine(0.15f));
+            //Debug.Log(Time.time + ": HeavyAttack --- context.started!");
+        }
+        //if (context.performed)
+        //{
+        //    if (context.interaction is HoldInteraction)
+        //    {
+        //        Debug.Log(Time.time + ": HeavyAttack --- Hold performed!");
+        //    }
+        //}
+        if (context.canceled)
+        {
+            if (ContinueHeavyCoroutine != null) StopCoroutine(ContinueHeavyCoroutine);
+            if (Time.time < nextHeavtCanAttackTime && heavyAttackSkillData.state == SkillState.Anticipation)
+            {
+                skillController.Interrupt();
+                skillController.TryCast(lightAttackSkillData);
+            }
+            //Debug.Log(Time.time + ": HeavyAttack --- context.canceled!");
+            //    PlayerDelegates.Instance.OnAttackCancel?.Invoke();
+        }
+    }
+
+    Coroutine ContinueBlockCoroutine;
+    private IEnumerator ContinueBlockRoutine(float interval)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(interval);
+            if (skillController.prevSkillOk && playerAnimations.GetCurrentActionId() != BlockSkillActionId)
+            {
+                playerAnimations.StartAction(BlockSkillActionId);
+            }
+        }
     }
     public void InvokeBlock(InputAction.CallbackContext context)
     {
         if (context.started)
         {
-            skillController.Interrupt();
+            //Debug.Log("block started");
+            StopAllCoroutines();
+            skillController.ForceInterrupt();
+            skillController.TryCast(skillSet.gcd);
+            playerAnimations.StartAction(BlockSkillActionId);
+            ContinueBlockCoroutine = StartCoroutine(ContinueBlockRoutine(0.5f));
             statusSystem.isBlocking = true;
         }
         if (context.canceled)
         {
+            //Debug.Log("block canceled");
+            if (ContinueBlockCoroutine != null) StopCoroutine(ContinueBlockCoroutine);
+            if (playerAnimations.GetCurrentActionId() == BlockSkillActionId)
+            {
+                playerAnimations.EndAction();
+            }
             statusSystem.isBlocking = false;
         }
     }
@@ -70,9 +151,27 @@ public class PlayerInputs : MonoBehaviour
 
         if (context.started)
         {
-            skillController.TryCast(skillData, Vector3.zero);
+            skillController.TryCast(skillData);
             //Debug.Log(context.action.name + "pressed");
             //Debug.Log("skill first pressed!");
+        }
+    }
+    public void InvokeRollDodge(InputAction.CallbackContext context)
+    {
+        if (playerAnimations.GetCurrentRollId() < 1)
+        {
+            PlayerDelegates.Instance.OnRollDodgeStart?.Invoke(context.action.name);
+        }
+    }
+    public void InvokeBash(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            //Debug.Log("bash performed!");
+            StopAllCoroutines();
+            skillController.Interrupt();
+            skillController.TryCast(BashSkillData);
+            PlayerDelegates.Instance.OnBash?.Invoke();
         }
     }
     public void InvokeBreakFree(InputAction.CallbackContext context)
@@ -85,9 +184,9 @@ public class PlayerInputs : MonoBehaviour
 
     public void ToggleInputSystem(InputAction.CallbackContext context)
     {
-        string currentActionMap = playerInput.currentActionMap.name;
-        if (context.started)
+        if (context.performed)
         {
+            string currentActionMap = playerInput.currentActionMap.name;
             if (currentActionMap == "Player")
             {
                 SwitchToUIMap();
@@ -97,6 +196,10 @@ public class PlayerInputs : MonoBehaviour
                 SwitchToPlayerMap();
             }
         }
+        //if (context.canceled)
+        //{
+        //    //佔位防止報錯
+        //}
     }
 
     public void SwitchToPlayerMap()
@@ -121,7 +224,11 @@ public class PlayerInputs : MonoBehaviour
     {
         if (context.performed)
         {
-            playerAnimations.ToggleCombatPose();
+            if (skillController.prevSkillOk)
+            {
+                skillController.TryCast(skillSet.gcd);
+                playerAnimations.ToggleCombatPose();
+            }
         }
     }
 }

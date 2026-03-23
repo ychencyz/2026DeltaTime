@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Helper
@@ -12,4 +13,13 @@ public class Helper
         }
         return null;
     }
+    public static IEnumerator SetTimeout(System.Action callback, float delay)
+    {
+        yield return new WaitForSeconds(delay); // Wait for game time
+        callback?.Invoke();
+    }
+    // ¥Îªk:
+    //StartCoroutine(SetTimeout(() => {
+    //    Debug.Log("Executed after 2 seconds!");
+    //}, 2.0f));
 }

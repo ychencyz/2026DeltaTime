@@ -10,24 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 484ac7ae619563448a38778b151a0735, type: 3}
-  m_Name: 4_TestSkill4
+  m_Name: 4_LightAttack
   m_EditorClassIdentifier: 
   id: 4
   state: 0
-  position: {x: 0, y: 0, z: 0}
+  position: {x: -16.18, y: 259.28265, z: -211.46925}
   displayName: Light Attack
   anticipationTime: 0.15
   recoveryTime: 0
   cooldownTime: 1
   damage: 50
   targetType: 2
-  actionId: 1
-  actionClip: {fileID: 7400000, guid: 96ed5e4a6dc56fe4c9c2de75fc8a077c, type: 3}
-  currentSkillAction: 0
-  skillActionList:
+  animationGroups:
   - actionId: 1
     actionClip: {fileID: 7400000, guid: 96ed5e4a6dc56fe4c9c2de75fc8a077c, type: 3}
-  - actionId: 20
-    actionClip: {fileID: 7400000, guid: 4d60ed8f8717db744958ba93cce93fa0, type: 2}
+  - actionId: 1
+    actionClip: {fileID: 7400000, guid: 96ed5e4a6dc56fe4c9c2de75fc8a077c, type: 3}
   VFXPrefab: {fileID: 0}
-  icon: {fileID: -1979897024, guid: a10849c8f0c3ef54f9efaf9d1effa924, type: 3}
+  icon: {fileID: -1979897024, guid: 04f785218b343e3439369847dd85f47d, type: 3}

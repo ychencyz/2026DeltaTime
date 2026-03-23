@@ -10,18 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 484ac7ae619563448a38778b151a0735, type: 3}
-  m_Name: 2_TestSkill2
+  m_Name: 22_Bash
   m_EditorClassIdentifier: 
-  id: 3
+  id: 22
   state: 0
   position: {x: 0, y: 0, z: 0}
-  displayName: Meteor
+  displayName: Bash
   anticipationTime: 0.15
   recoveryTime: 0
-  cooldownTime: 5
-  damage: 100
-  targetType: 2
-  actionId: -1
-  actionClip: {fileID: 0}
-  VFXPrefab: {fileID: 7957833072274404953, guid: 3355f6bfa6db8b24281b827de929694c, type: 3}
-  icon: {fileID: -576254445, guid: fc854d3eb3447eb438e4d2962b764fa6, type: 3}
+  cooldownTime: 1
+  damage: 0
+  aniticipationActionId: -1
+  targetType: 1
+  animationGroups:
+  - actionId: 22
+    actionClip: {fileID: 7400000, guid: b34c71b473cb22a4c8415e70f26bb299, type: 3}
+  VFXPrefab: {fileID: 0}
+  icon: {fileID: -1979897024, guid: 04f785218b343e3439369847dd85f47d, type: 3}

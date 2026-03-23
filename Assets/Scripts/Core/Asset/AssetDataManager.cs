@@ -1,5 +1,6 @@
-using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public class AssetDataManager : MonoBehaviour
 {
@@ -23,8 +24,9 @@ public class AssetDataManager : MonoBehaviour
         else
         {
             Instance = this;
-            InitializeDatabase();
         }
+        allSkillsList = Resources.LoadAll<AssetData>("Skills/").ToList();
+        InitializeDatabase();
     }
 
     private void InitializeDatabase()

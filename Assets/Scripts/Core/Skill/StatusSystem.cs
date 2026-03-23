@@ -6,6 +6,7 @@ public class StatusSystem: MonoBehaviour
     public bool canMove = true;
     public bool canCast = true;
     public bool isBlocking = false;
+    public bool isRolling = false;
 
     [Header("格擋設定")]
     [SerializeField] private float blockDamageReduction = 0.7f; // 格擋減傷比例 (70%)

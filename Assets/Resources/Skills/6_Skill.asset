@@ -10,18 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 484ac7ae619563448a38778b151a0735, type: 3}
-  m_Name: 3_TestSkill3
+  m_Name: 6_Skill
   m_EditorClassIdentifier: 
-  id: 2
+  id: 6
   state: 0
   position: {x: 0, y: 0, z: 0}
-  displayName: Red Explosion
+  displayName: throw rock
   anticipationTime: 0.15
   recoveryTime: 0
   cooldownTime: 2
-  damage: 100
-  targetType: 2
-  actionId: -1
-  actionClip: {fileID: 0}
-  VFXPrefab: {fileID: 8378648546881499446, guid: 867c572a5be680d42a042d2349f10143, type: 3}
-  icon: {fileID: -981660072, guid: a09ef8e38c9f80d47b377bd11ec84037, type: 3}
+  damage: 10
+  targetType: 1
+  animationGroups:
+  - actionId: 2
+    actionClip: {fileID: 3094330708855449807, guid: 39e2b573902399d4fbd58117e24ea1d2, type: 3}
+  VFXPrefab: {fileID: 1289543790355709915, guid: b99922c2f59b1a542bdd06ae8bee47ae, type: 3}
+  icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
